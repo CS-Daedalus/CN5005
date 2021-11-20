@@ -3,7 +3,6 @@ pipeline {
     tools {
         maven 'Maven v3.8.3'
         jdk 'JDK v8u221'
-        sonarscanner 'SonarScanner v4.6.2'
     }
     stages {
         stage ('SCM') {
@@ -24,9 +23,13 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
+            environment {
+                sonarScanner = tool 'SonarScanner v4.6.2', type: 'hudson.plugins.sonar.tools.SonarRunnerInstallation'
+            }
+
             steps {
-                withSonarQubeEnv() {
-                  sh "${sonarscanner}/bin/sonar-scanner"
+                withSonarQubeEnv('sonarqube') {
+                  sh "${sonarScanner}/bin/sonar-scanner"
                 }
 
                 timeout(time: 10, unit: 'MINUTES') {
