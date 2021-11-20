@@ -33,7 +33,6 @@ public class MainController
     protected void sortPersons(ActionEvent event)
             throws Exception
     {
-        System.out.println("Sorting persons...");
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(
                 Objects.requireNonNull(
@@ -49,8 +48,19 @@ public class MainController
 
     @FXML
     protected void findRelations(ActionEvent event)
+            throws Exception
     {
-        System.out.println("Find relations...");
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(
+                Objects.requireNonNull(
+                        Thread.currentThread().getContextClassLoader()
+                                .getResource("view/relations.fxml")));
+        stage.setScene(new Scene(root));
+        stage.setTitle("testing");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+                ((Node)event.getSource()).getScene().getWindow());
+        stage.show();
     }
 
     @FXML
