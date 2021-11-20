@@ -23,13 +23,13 @@ public class App
             Font.loadFont(
                 Objects.requireNonNull(
                     Thread.currentThread().getContextClassLoader()
-                          .getResource("com/gentree/fonts/Arial.ttf")).toExternalForm(), 12);
+                          .getResource("fonts/Arial.ttf")).toExternalForm(), 12);
         }
 
         Parent root = FXMLLoader.load(
             Objects.requireNonNull(
                 Thread.currentThread().getContextClassLoader()
-                      .getResource("com/gentree/view/main.fxml")));
+                      .getResource("view/main.fxml")));
 
         stage.setTitle(Util.TITLE);
         stage.setScene(new Scene(root, Util.APP_WIDTH, Util.APP_HEIGHT));
