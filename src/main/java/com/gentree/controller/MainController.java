@@ -7,9 +7,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Objects;
 
 public class MainController
@@ -67,6 +71,27 @@ public class MainController
     protected void exportToDot(ActionEvent event)
     {
         System.out.println("Exporting DOT...");
+
+        FileChooser fileChooser = new FileChooser();
+        String smaple = "contents of the dot file";
+
+        System.out.println("The button openExportDot was activated");
+        fileChooser.setInitialDirectory(new File("C:\\"));
+        fileChooser.setInitialFileName("Dot_file");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Dot Files", "*.dot"));
+        File file = fileChooser.showSaveDialog(new Stage());
+        if(file != null)
+        {
+            saveSystem(file, smaple);
+            System.out.println("Dot file created!");
+            System.out.println("Dot filename: " + file.getName());
+            System.out.println("Dot absolutePath: " + file.getAbsolutePath());
+        }
+        else
+        {
+            System.out.println("Aborded");
+        }
     }
 
     @FXML
@@ -74,5 +99,21 @@ public class MainController
     {
         System.out.println("Exporting image...");
     }
+
+    private void saveSystem(File file, String content)
+    {
+        try
+        {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.write(content);
+            printWriter.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }
