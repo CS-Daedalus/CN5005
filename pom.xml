@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.gentree</groupId>
-    <artifactId>CN5005-GenTree</artifactId>
+    <artifactId>cn5005-gentree</artifactId>
     <version>1.0</version>
     <name>gentree</name>
 
@@ -14,7 +14,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <junit.version>5.8.1</junit.version>
-        <sonar.projectKey>CN5005-Genealogy-Tree</sonar.projectKey>
     </properties>
 
     <dependencies>
