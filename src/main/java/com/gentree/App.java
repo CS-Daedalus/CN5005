@@ -22,19 +22,22 @@ public class App
             //Load Arial font for all *nix platforms
             Font.loadFont(
                 Objects.requireNonNull(
-                    getClass().getClassLoader().getResource("com/gentree/fonts/Arial.ttf")).toExternalForm(), 12);
+                    Thread.currentThread().getContextClassLoader()
+                          .getResource("com/gentree/fonts/Arial.ttf")).toExternalForm(), 12);
         }
 
         Parent root = FXMLLoader.load(
             Objects.requireNonNull(
-                getClass().getClassLoader().getResource("com/gentree/view/main.fxml")));
+                Thread.currentThread().getContextClassLoader()
+                      .getResource("com/gentree/view/main.fxml")));
 
         stage.setTitle(Util.TITLE);
         stage.setScene(new Scene(root, Util.APP_WIDTH, Util.APP_HEIGHT));
         stage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 }
