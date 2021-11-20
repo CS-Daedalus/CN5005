@@ -9,11 +9,6 @@ public class MainController
     @FXML
     private Label welcomeText;
 
-    public MainController(Label welcomeText)
-    {
-        this.welcomeText = welcomeText;
-    }
-
     @FXML
     public void initialize()
     {

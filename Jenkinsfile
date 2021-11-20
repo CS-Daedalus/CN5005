@@ -3,24 +3,22 @@ pipeline {
     tools {
         maven 'Maven v3.8.3'
         jdk 'JDK v8u221'
+        sonarscanner 'SonarScanner v4.6.2'
     }
     stages {
-        stage ('Initialize') {
+        stage ('SCM') {
             steps {
-                //sh '''
-                //    echo "PATH = ${PATH}"
-                //    echo "M2_HOME = ${M2_HOME}"
-                //'''
+                checkout scm
             }
         }
 
         stage ('Build') {
             steps {
-                //sh 'mvn -Dmaven.test.failure.ignore=true install'
+                sh 'mvn clean package'
             }
             post {
                 success {
-                    //junit 'target/surefire-reports/**/*.xml'
+                    junit 'target/surefire-reports/**/*.xml'
                 }
             }
         }
@@ -28,7 +26,11 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv() {
-                  sh "${maven}/bin/mvn clean verify sonar:sonar"
+                  sh "${sonarscanner}/bin/sonar-scanner"
+                }
+
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
