@@ -32,6 +32,7 @@ hs_err_pid*
 # Sonarlint
 .idea/sonarlint
 .idea
+.scannerwork
 
 # User-specific stuff
 .idea/**/workspace.xml
