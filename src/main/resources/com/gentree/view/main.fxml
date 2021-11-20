@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox alignment="CENTER" spacing="20.0"
+      xmlns="http://javafx.com/javafx/8.0.291"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gentree.controller.MainController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <stylesheets>
+        <URL value="@../css/app.css" />
+    </stylesheets>
+
+    <Label fx:id="welcomeText" />
+
+    <Button onAction="#importCsv" text="Import CSV" />
+    <Button onAction="#sortPersons" text="Sort people" />
+    <Button onAction="#findRelations" text="Find relations" />
+    <Button onAction="#exportToDot" text="Export to .dot" />
+    <Button onAction="#exportToImage" text="Export to image" />
+</VBox>
