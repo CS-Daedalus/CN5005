@@ -2,7 +2,15 @@ package com.gentree.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class MainController
 {
@@ -23,8 +31,20 @@ public class MainController
 
     @FXML
     protected void sortPersons(ActionEvent event)
+            throws Exception
     {
         System.out.println("Sorting persons...");
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(
+                Objects.requireNonNull(
+                        Thread.currentThread().getContextClassLoader()
+                                .getResource("view/people.fxml")));
+        stage.setScene(new Scene(root));
+        stage.setTitle("testing");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+                ((Node)event.getSource()).getScene().getWindow());
+        stage.show();
     }
 
     @FXML
