@@ -10,10 +10,12 @@ import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.Objects;
 
 public class MainController
@@ -98,6 +100,29 @@ public class MainController
     protected void exportToImage(ActionEvent event)
     {
         System.out.println("Exporting image...");
+
+        FileChooser fileChooser = new FileChooser();
+
+
+        System.out.println("The button openExportDot was activated");
+        fileChooser.setInitialDirectory(new File("C:\\"));
+        fileChooser.setInitialFileName("Image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.jpg"),
+                new FileChooser.ExtensionFilter("Image Files", "*.png"),
+                new FileChooser.ExtensionFilter("Image Files", "*.svg"));
+        File file = fileChooser.showSaveDialog(new Stage());
+        if(file != null)
+        {
+            System.out.println("Image file created!");
+            System.out.println("Image filename: " + FilenameUtils.getBaseName(file.getName()));
+            System.out.println("Image fileExtention: " + FilenameUtils.getExtension(file.getName()));
+            System.out.println("Image absolutePath: " + file.getAbsolutePath());
+        }
+        else
+        {
+            System.out.println("Aborded");
+        }
     }
 
     private void saveSystem(File file, String content)
