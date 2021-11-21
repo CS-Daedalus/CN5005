@@ -29,7 +29,7 @@ pipeline {
             }
 
             steps {
-                withSonarQubeEnv('SonarScanner v4.6.2') {
+                withSonarQubeEnv('SonarQube-Panosru') {
                   sh "${sonarScanner}/bin/sonar-scanner"
                 }
 
