@@ -13,7 +13,8 @@ pipeline {
 
         stage ('Build') {
             steps {
-                sh 'mvn clean package'
+                //sh 'mvn clean package'
+                sh 'mvn clean test'
             }
             post {
                 success {
@@ -28,7 +29,7 @@ pipeline {
             }
 
             steps {
-                withSonarQubeEnv('sonarqube') {
+                withSonarQubeEnv('SonarScanner v4.6.2') {
                   sh "${sonarScanner}/bin/sonar-scanner"
                 }
 
