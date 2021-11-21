@@ -24,7 +24,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             environment {
-                def sonarScanner = tool 'SonarScanner v4.6.2', type: 'hudson.plugins.sonar.tools.SonarRunnerInstallation'
+                def sonarScanner = tool 'SonarScanner v4.6.2'
             }
 
             steps {
