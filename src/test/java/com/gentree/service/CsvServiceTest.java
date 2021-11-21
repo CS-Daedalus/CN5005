@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Deque;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +18,10 @@ public class CsvServiceTest
     private final String empty = Helper.getResourceFile("csv/empty.csv").getAbsolutePath();
     private final String incomplete = Helper.getResourceFile("csv/incomplete.csv").getAbsolutePath();
     private final CsvService csvService = CsvService.getInstance();
+
+    public CsvServiceTest()
+        throws UnsupportedEncodingException
+    {}
 
     @BeforeEach
     private void resetCache()
