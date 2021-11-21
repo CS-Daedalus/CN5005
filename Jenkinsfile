@@ -1,9 +1,6 @@
 pipeline {
     agent any
-    tools {
-        maven 'Maven v3.8.3'
-        jdk 'JDK v17'
-    }
+
     stages {
         stage ('SCM') {
             steps {
@@ -11,7 +8,12 @@ pipeline {
             }
         }
 
-        stage ('Build') {
+        stage ('Run tests') {
+            tools {
+                maven 'Maven v3.8.3'
+                jdk 'JDK v8u221'
+            }
+
             steps {
                 //sh 'mvn clean package'
                 sh 'mvn clean test'
@@ -24,17 +26,9 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            environment {
-                def sonarScanner = tool 'SonarScanner v4.6.2'
-            }
-
             steps {
                 withSonarQubeEnv('SonarQube-Panosru') {
-                  sh "${sonarScanner}/bin/sonar-scanner"
-                }
-
-                timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                  sh "mvn clean verify sonar:sonar -Dsonar.host.url=${SQ_URL} -Dmaven.exec.skip=true -Dmaven.jar.skip=true -Dmaven.dependency.skip=true -Dsonar.login=${SQ_TOKEN}"
                 }
             }
         }
