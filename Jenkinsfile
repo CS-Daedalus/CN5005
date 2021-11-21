@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         maven 'Maven v3.8.3'
-        jdk 'JDK v8u221'
+        jdk 'JDK v17'
     }
     stages {
         stage ('SCM') {
