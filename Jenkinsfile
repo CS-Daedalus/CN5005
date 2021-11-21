@@ -1,18 +1,16 @@
 pipeline {
     agent any
-
+    tools {
+        maven 'Maven v3.8.3'
+        jdk 'JDK v8u221'
+    }
     stages {
         stage ('SCM') {
             steps {
                 checkout scm
             }
         }
-
         stage ('Run tests') {
-            tools {
-                maven 'Maven v3.8.3'
-                jdk 'JDK v8u221'
-            }
 
             steps {
                 //sh 'mvn clean package'
