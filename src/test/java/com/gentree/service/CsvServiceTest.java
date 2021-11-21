@@ -27,8 +27,7 @@ public class CsvServiceTest
     private void resetCache()
     {
         // Reset CsvService cache
-        csvService.getPersons().clear();
-        csvService.getRelationships().clear();
+        csvService.reset();
     }
 
     @Test

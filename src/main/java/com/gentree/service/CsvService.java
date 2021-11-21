@@ -4,7 +4,11 @@ import com.gentree.model.Person;
 import com.gentree.model.Relation;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayDeque;
@@ -12,13 +16,13 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.Locale;
 
-public class CsvService
+public final class CsvService
 {
     // Making safe the use of same instance via multiple threads at the same time
     private static volatile CsvService instance;
-    public final String CSV_SEPARATOR = ",";
-    private Deque<String> persons       = new ArrayDeque<>();
-    private Deque<String> relationships = new ArrayDeque<>();
+    public static final String CSV_SEPARATOR = ",";
+    private final Deque<String> persons       = new ArrayDeque<>();
+    private final Deque<String> relationships = new ArrayDeque<>();
 
     private CsvService()
     {
@@ -27,15 +31,17 @@ public class CsvService
 
     public static CsvService getInstance()
     {
+        CsvService localInstance = instance;
         // Thread-safe singleton
-        if (null == instance)
+        if (null == localInstance)
             synchronized (CsvService.class)
             {
+                localInstance = instance;
                 if (null == instance)
-                    instance = new CsvService();
+                    instance = localInstance = new CsvService();
             }
 
-        return instance;
+        return localInstance;
     }
 
     public ImmutablePair<Deque<String>, Deque<String>> readFile(final String fileName)
@@ -48,52 +54,59 @@ public class CsvService
                 new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8))
         ) {
             String line;
+            long lineNumber = 0;
             while (null != (line = bufferedReader.readLine()))
             {
+                lineNumber++;
                 if(line.isEmpty()) continue;
-                String[] split = sanityCheck(line);
-                if(split.length == 2)
-                {
-                    getPersons().add(split[0] + "," + split[1]);
-                }
-                else if(split.length == 3)
-                {
-                    getRelationships().add(split[0] + "," + split[1] + "," + split[2]);
-                }
+                processLine(line, lineNumber);
             }
-        }
-        catch (IOException e)
-        {
-            // normally we log the exception and then we propagate it
-            throw e;
         }
 
         if (persons.isEmpty() || relationships.isEmpty())
             throw new IllegalArgumentException("The file is either empty or missing people or relations.");
 
-        //while (!persons.isEmpty()) {
-        //    String person = persons.pollFirst();
-        //    System.out.println(person);
-        //}
-        //
-        //System.out.println("####################################################");
-        //
-        //while (!relationships.isEmpty()) {
-        //    String relationship = relationships.pollFirst();
-        //    System.out.println(relationship);
-        //}
-
         return new ImmutablePair<>(persons, relationships);
     }
 
-    public Deque<String> getPersons()
+    public void reset()
     {
-        return persons;
+        persons.clear();
+        relationships.clear();
     }
 
-    public Deque<String> getRelationships()
+    private void processLine(String line, long lineNumber)
+        throws IllegalArgumentException
     {
-        return relationships;
+        String[] split = sanityCheck(line);
+
+        switch (split.length)
+        {
+            case 2:
+                addPerson(split);
+                break;
+
+            case 3:
+                addRelationships(split);
+                break;
+
+            default:
+                throw new IllegalArgumentException(
+                    String.format(
+                        Locale.getDefault(),
+                        "Line %d is not valid. It has %d fields",
+                        lineNumber, split.length));
+        }
+    }
+
+    private void addPerson(String[] split)
+    {
+        persons.add(split[0] + "," + split[1]);
+    }
+
+    private void addRelationships(String[] split)
+    {
+        relationships.add(split[0] + "," + split[1] + "," + split[2]);
     }
 
     private String[] sanityCheck(final String line)
