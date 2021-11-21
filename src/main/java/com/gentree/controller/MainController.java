@@ -33,6 +33,18 @@ public class MainController
     protected void importCsv(ActionEvent event)
     {
         System.out.println("Importing csv...");
+
+        FileChooser fc = new FileChooser();
+        File selectedFile;
+        fc.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        selectedFile = fc.showOpenDialog(null);
+
+
+        if (selectedFile != null)
+        {
+            System.out.println(selectedFile.getAbsolutePath());
+        }
     }
 
     @FXML
