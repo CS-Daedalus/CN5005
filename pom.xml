@@ -18,6 +18,22 @@
         <maven.exec.skip>false</maven.exec.skip>
         <maven.dependency.skip>false</maven.dependency.skip>
         <mavn.jar.skip>false</mavn.jar.skip>
+
+        <!-- SonarQube -->
+        <sonar.projectKey>CN5005-Genealogy-Tree</sonar.projectKey>
+        <sonar.projectName>CN5005 Genealogy Tree</sonar.projectName>
+        <sonar.sources>src/main/java,src/main/resources</sonar.sources>
+        <sonar.tests>src/test</sonar.tests>
+        <sonar.exclusions>.scannerwork,.idea,target,sonar-reports</sonar.exclusions>
+        <sonar.language>java</sonar.language>
+        <sonar.java.source>${maven.compiler.source}</sonar.java.source>
+        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+        <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
+        <sonar.surefire.reportsPath>${sonar.junit.reportsPath}</sonar.surefire.reportsPath>
+        <sonar.coverage.jacoco.xmlReportPaths>target/jacoco.exec</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     </properties>
 
     <dependencies>
