@@ -4,11 +4,6 @@ pipeline {
         maven 'Maven v3.8.3'
     }
     stages {
-        stage ('SCM') {
-            steps {
-                checkout scm
-            }
-        }
         stage ('Run tests') {
             tools {
                 jdk 'JDK v8u221'
@@ -27,6 +22,7 @@ pipeline {
         stage('SonarQube Analysis') {
             tools {
                 jdk 'JDK v17'
+                nodejs 'Node v17.1.0'
             }
             steps {
                 withSonarQubeEnv('SonarQube-Panosru') {
