@@ -7,11 +7,29 @@ import java.util.Locale;
 
 public class Person
 {
-    String name;
-    List<Person> children = new ArrayList<>();
-    Gender gender;
-    Person mother;
-    Person father;
+    private String name;
+    private List<Person> children = new ArrayList<>();
+    private Gender gender;
+    private Person mother;
+    private Person father;
+
+    public Person(String name, Gender gender, Person mother, Person father)
+    {
+        this(name, gender, mother);
+        setFather(father);
+    }
+
+    public Person(String name, Gender gender, Person mother)
+    {
+        this(name, gender);
+        setMother(mother);
+    }
+
+    public Person(String name, Gender gender)
+    {
+        setName(name);
+        setGender(gender);
+    }
 
     public String getName()
     {
@@ -62,24 +80,6 @@ public class Person
     public void setFather(Person father)
     {
         this.father = father;
-    }
-
-    public Person(String name, Gender gender, Person mother, Person father)
-    {
-        this(name, gender, mother);
-        setFather(father);
-    }
-
-    public Person(String name, Gender gender, Person mother)
-    {
-        this(name, gender);
-        setMother(mother);
-    }
-
-    public Person(String name, Gender gender)
-    {
-        setName(name);
-        setGender(gender);
     }
 
     public enum Gender
