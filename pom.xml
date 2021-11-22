@@ -20,9 +20,10 @@
         <mavn.jar.skip>false</mavn.jar.skip>
 
         <!-- SonarQube -->
-        <sonar.projectKey>${artifactId}</sonar.projectKey>
-        <sonar.projectName>${name}</sonar.projectName>
+        <sonar.projectKey>${project.artifactId}</sonar.projectKey>
+        <sonar.projectName>CN5005 Genealogy Tree</sonar.projectName>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
+        <sonar.wordking.directory>target/sonar</sonar.wordking.directory>
         <sonar.tests>src/test</sonar.tests>
         <sonar.exclusions>.scannerwork,.idea,target,sonar-reports</sonar.exclusions>
         <sonar.language>java</sonar.language>
@@ -30,10 +31,9 @@
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
         <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
         <sonar.surefire.reportsPath>${sonar.junit.reportsPath}</sonar.surefire.reportsPath>
-        <sonar.coverage.jacoco.xmlReportPaths>target/jacoco.exec</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.java.binaries>target/classes</sonar.java.binaries>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
     </properties>
 
     <dependencies>
@@ -124,139 +124,178 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.2</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>properties-maven-plugin</artifactId>
-                    <version>1.0.0</version>
-                    <executions>
-                        <execution>
-                            <phase>initialize</phase>
-                            <goals>
-                                <goal>read-project-properties</goal>
-                            </goals>
-                            <configuration>
-                                <files>
-                                    <file>sonar-project.properties</file>
-                                </files>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.2.0</version>
-                    <configuration>
-                        <skip>${mavn.jar.skip}</skip>
-                        <archive>
-                            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                        </archive>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.22.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.2.0</version>
-                    <configuration>
-                        <skip>${maven.dependency.skip}</skip>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>unpack-dependencies</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>unpack-dependencies</goal>
-                            </goals>
-                            <configuration>
-                                <excludeScope>system</excludeScope>
-                                <excludeGroupIds>
-                                    org.junit
-                                </excludeGroupIds>
-                                <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>1.2.1</version>
-                    <configuration>
-                        <skip>${maven.exec.skip}</skip>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>package-jar</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>exec</goal>
-                            </goals>
-                            <configuration>
-                                <executable>${java.home}/../bin/javapackager</executable>
-                                <arguments>
-                                    <argument>-createjar</argument>
-                                    <argument>-nocss2bin</argument>
-                                    <argument>-appclass</argument>
-                                    <argument>com.gentree.App</argument>
-                                    <argument>-srcdir</argument>
-                                    <argument>${project.build.directory}/classes</argument>
-                                    <argument>-outdir</argument>
-                                    <argument>.</argument>
-                                    <argument>-outfile</argument>
-                                    <argument>${project.artifactId}-app</argument>
-                                    <argument>-v</argument>
-
-                                </arguments>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-maven-plugin</artifactId>
-                    <version>0.0.7</version>
-                    <executions>
-                        <execution>
-                            <!-- Default configuration for running with: mvn clean javafx:run -->
-                            <id>default-cli</id>
-                            <configuration>
-                                <mainClass>com.gentree.App</mainClass>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>3.7.0.1746</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.6</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.15.0</version>
+                <configuration>
+                    <printFailingErrors>true</printFailingErrors>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <skip>${mavn.jar.skip}</skip>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <skip>${maven.dependency.skip}</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <skip>${maven.exec.skip}</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.7</version>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.7.0.1746</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.6</version>
+            </plugin>
+        </plugins>
     </build>
 
     <profiles>
+        <profile>
+            <id>maven-dependency</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <skip>${maven.dependency.skip}</skip>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>unpack-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>unpack-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <excludeScope>system</excludeScope>
+                                    <excludeGroupIds>
+                                        org.junit
+                                    </excludeGroupIds>
+                                    <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>maven-exec</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <skip>${maven.exec.skip}</skip>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>package-jar</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${java.home}/../bin/javapackager</executable>
+                                    <arguments>
+                                        <argument>-createjar</argument>
+                                        <argument>-nocss2bin</argument>
+                                        <argument>-appclass</argument>
+                                        <argument>com.gentree.App</argument>
+                                        <argument>-srcdir</argument>
+                                        <argument>${project.build.directory}/classes</argument>
+                                        <argument>-outdir</argument>
+                                        <argument>.</argument>
+                                        <argument>-outfile</argument>
+                                        <argument>${project.artifactId}-app</argument>
+                                        <argument>-v</argument>
+
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>openjfx</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.openjfx</groupId>
+                        <artifactId>javafx-maven-plugin</artifactId>
+                        <version>0.0.7</version>
+                        <executions>
+                            <execution>
+                                <!-- Default configuration for running with: mvn clean javafx:run -->
+                                <id>default-cli</id>
+                                <configuration>
+                                    <mainClass>com.gentree.App</mainClass>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>coverage</id>
             <activation>
@@ -267,16 +306,12 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.6</version>
                         <executions>
                             <execution>
-                                <id>prepare-agent</id>
+                                <id>prepare-and-report</id>
                                 <goals>
                                     <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <goals>
                                     <goal>report</goal>
                                 </goals>
                             </execution>
