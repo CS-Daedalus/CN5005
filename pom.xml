@@ -20,8 +20,8 @@
         <mavn.jar.skip>false</mavn.jar.skip>
 
         <!-- SonarQube -->
-        <sonar.projectKey>CN5005-Genealogy-Tree</sonar.projectKey>
-        <!--<sonar.projectName>CN5005 Genealogy Tree</sonar.projectName>-->
+        <sonar.projectKey>${artifactId}</sonar.projectKey>
+        <sonar.projectName>${name}</sonar.projectName>
         <sonar.sources>src/main/java,src/main/resources</sonar.sources>
         <sonar.tests>src/test</sonar.tests>
         <sonar.exclusions>.scannerwork,.idea,target,sonar-reports</sonar.exclusions>
