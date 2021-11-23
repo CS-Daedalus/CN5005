@@ -34,7 +34,7 @@ pipeline {
                     sh "mvn clean verify ${SONAR_MAVEN_GOAL} -Dsonar.host.url=${SONAR_HOST_URL} -Dmaven.exec.skip=true -Dmaven.jar.skip=true -Dmaven.dependency.skip=true -Dsonar.login=${SONAR_AUTH_TOKEN}"
                   }
                 }
-                timeout(time: 1, until: 'HOURS') {
+                timeout(time: 1, unit: 'HOURS') {
                   waitForQualityGate abortPipeline: true
                 }
             }
