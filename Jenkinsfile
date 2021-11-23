@@ -28,9 +28,9 @@ pipeline {
           }
             steps {
               scmSkip(deleteBuild: true, skipPattern:'.*\\[CI-SKIP\\].*')
-              
+
                 withSonarQubeEnv('SonarQube-Panosru') {
-                  withMaven(maven: 'Maven v3.8.3', jdk 'JDK v17') {
+                  withMaven(maven: 'Maven v3.8.3', jdk: 'JDK v17') {
                     sh "mvn clean verify ${SONAR_MAVEN_GOAL} -Dsonar.host.url=${SONAR_HOST_URL} -Dmaven.exec.skip=true -Dmaven.jar.skip=true -Dmaven.dependency.skip=true -Dsonar.login=${SONAR_AUTH_TOKEN}"
                   }
                 }
