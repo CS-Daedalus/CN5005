@@ -4,6 +4,12 @@ pipeline {
         maven 'Maven v3.8.3'
     }
     stages {
+        stage('Checkout') {
+          steps {
+            scmSkip(deleteBuild: true, skipPattern:'.*\[ci skip\].*')
+          }
+        }
+
         stage ('Run tests') {
             tools {
                 jdk 'JDK v8u221'
