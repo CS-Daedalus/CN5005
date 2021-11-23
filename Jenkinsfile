@@ -24,7 +24,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
           tools {
-              nodejs 'Node v17.1.0'
+              nodejs 'Node v16.13.0'
           }
             steps {
               scmSkip(deleteBuild: true, skipPattern:'.*\\[CI-SKIP\\].*')
@@ -39,5 +39,14 @@ pipeline {
                 }
             }
         }
+    }
+
+    post {
+      cleanup {
+        catchError(buildResult: null, stageResult: 'FAILURE', message: 'Cleanup Failure') {
+            echo '...Cleaning up workspace'
+            cleanWs()
+        }
+      }
     }
 }
