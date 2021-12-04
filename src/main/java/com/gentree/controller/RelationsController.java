@@ -44,6 +44,11 @@ public class RelationsController
         listViewB.setItems(observableListB);
     }
 
+    public void execFunction() {
+
+        outputLabel.setText("It works!");
+    }
+
     @FXML
     void initialize() { setListView(); }
 }
