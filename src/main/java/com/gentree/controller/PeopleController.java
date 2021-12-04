@@ -1,15 +1,36 @@
 package com.gentree.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PeopleController
 {
+    @FXML
+    private ListView NamesList;
 
+    private final List<String> NameList = new ArrayList<>();
+    private final ObservableList<String> finalNameList = FXCollections.observableArrayList();
+
+    public void initialize() {
+
+
+        NameList.add("PersonA");
+        NameList.add("PersonB");
+        NameList.add("PersonC");
+        NameList.add("PersonD");
+
+        finalNameList.setAll(NameList);
+        NamesList.setItems(finalNameList);
+    }
     @FXML
     protected void saveSortedPeople() {
 

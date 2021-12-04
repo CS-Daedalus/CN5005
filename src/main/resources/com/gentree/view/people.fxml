@@ -5,7 +5,8 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gentree.controller.PeopleController">
 
-    <Button layoutX="249.0" layoutY="175.0" onAction="#saveSortedPeople" text="Save sorted people" />
+    <Button layoutX="241.0" layoutY="338.0" onAction="#saveSortedPeople" text="Save sorted people" />
+    <ListView fx:id="NamesList" layoutX="200.0" layoutY="24.0" prefHeight="274.0" prefWidth="200.0" />
 
 
 </AnchorPane>
