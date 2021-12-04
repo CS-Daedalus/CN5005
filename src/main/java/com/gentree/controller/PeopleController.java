@@ -3,8 +3,6 @@ package com.gentree.controller;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -21,7 +19,7 @@ public class PeopleController
         String sample = "contents of the txt file";
 
         System.out.println("The button saveSortedPeople was activated");
-        fileChooser.setInitialDirectory(new File("C:\\"));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.setInitialFileName("Sorted_people_txt_file");
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Txt Files", "*.txt"));
