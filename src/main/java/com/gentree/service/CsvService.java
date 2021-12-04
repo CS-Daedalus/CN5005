@@ -116,26 +116,21 @@ public final class CsvService
 
         if (2 > split.length || 3 < split.length)
             throw new IllegalArgumentException(
-                String.format(Locale.getDefault(), "Line [%s] is not valid", line)
-            );
+                String.format(Locale.getDefault(), "Line [%s] is not valid", line));
 
         if (2 == split.length && !Person.Gender.isValid(split[1]))
             throw new IllegalArgumentException(
                 String.format(
                     Locale.getDefault(),
                     "Unsupported gender in line: [%s], accepting: %s, \"%s\" is given.",
-                    line, Person.Gender.getSupportedGenders(), split[1]
-                )
-            );
+                    line, Person.Gender.getSupportedGenders(), split[1]));
 
         if (3 == split.length && !Relation.Bond.isValid(split[1]))
             throw new IllegalArgumentException(
                 String.format(
                     Locale.getDefault(),
                     "Unsupported relation in line: [%s], accepting: %s, \"%s\" is given.",
-                    line, Relation.Bond.getSupportedRelations(), split[1]
-                )
-            );
+                    line, Relation.Bond.getSupportedRelations(), split[1]));
 
         return split;
     }
