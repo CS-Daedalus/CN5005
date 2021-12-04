@@ -22,10 +22,10 @@ public class RelationsController
     private ListView listViewB;
 
     @FXML
-    private Label myLabel;
+    private Label outputLabel;
 
     @FXML
-    private Button myButton;
+    private Button confirmButton;
 
     private final List<String> peopleList = new ArrayList<>();
 
