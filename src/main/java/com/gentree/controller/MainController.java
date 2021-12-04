@@ -57,6 +57,7 @@ public class MainController
                                 .getResource("view/people.fxml")));
         stage.setScene(new Scene(root));
         stage.setTitle("testing");
+        stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
                 ((Node)event.getSource()).getScene().getWindow());
@@ -74,6 +75,7 @@ public class MainController
                                 .getResource("view/relations.fxml")));
         stage.setScene(new Scene(root));
         stage.setTitle("testing");
+        stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
                 ((Node)event.getSource()).getScene().getWindow());

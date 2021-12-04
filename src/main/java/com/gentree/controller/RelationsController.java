@@ -7,10 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.AnchorPane;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RelationsController
 {
@@ -22,28 +20,33 @@ public class RelationsController
     private ListView listViewB;
 
     @FXML
-    private Label myLabel;
+    private Label outputLabel;
 
     @FXML
-    private Button myButton;
+    private Button confirmButton;
 
-    private List<String> stringListA = new ArrayList<>(5);
-    private List<String> stringListB = new ArrayList<>(5);
+    private final List<String> peopleList = new ArrayList<>();
 
-    private ObservableList observableListA = FXCollections.observableArrayList();
-    private ObservableList observableListB = FXCollections.observableArrayList(stringListB);
+    private final ObservableList<String> observableListA = FXCollections.observableArrayList();
+    private final ObservableList<String> observableListB = FXCollections.observableArrayList();
 
-    public void setListView() {
+    @FXML
+    public void initialize() {
 
-        stringListA.add("PersonA");
-        observableListA.setAll(stringListA);
+        peopleList.add("PersonA");
+        peopleList.add("PersonD");
+        peopleList.add("PersonC");
+        peopleList.add("PersonB");
+
+        observableListA.setAll(peopleList);
+        observableListB.setAll(peopleList);
+
         listViewA.setItems(observableListA);
-
-        stringListB.add("PersonB");
-        observableListB.setAll(stringListB);
         listViewB.setItems(observableListB);
     }
 
-    @FXML
-    void initialize() { setListView(); }
+    public void execFunction() {
+
+        outputLabel.setText("It works!");
+    }
 }
