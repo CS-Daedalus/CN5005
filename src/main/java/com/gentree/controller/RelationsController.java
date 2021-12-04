@@ -45,8 +45,7 @@ public class RelationsController
         listViewB.setItems(observableListB);
     }
 
-    public void execFunction() {
+    public void findRelation() { outputLabel.setText("You have selected the following names: "+getSelection(listViewA)+" and "+getSelection(listViewB)); }
 
-        outputLabel.setText("It works!");
-    }
+    private String getSelection (ListView list) { return String.valueOf(list.getSelectionModel().getSelectedItems()); }
 }
