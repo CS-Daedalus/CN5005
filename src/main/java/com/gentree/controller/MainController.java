@@ -14,7 +14,6 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.util.Objects;
 
 public class MainController
@@ -32,12 +31,11 @@ public class MainController
     protected void importCsv(ActionEvent event)
     {
         System.out.println("Importing csv...");
-
         FileChooser fc = new FileChooser();
         File selectedFile;
         fc.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-        selectedFile = fc.showOpenDialog(null);
+            new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        selectedFile = fc.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
 
 
         if (selectedFile != null)
@@ -48,37 +46,37 @@ public class MainController
 
     @FXML
     protected void sortPersons(ActionEvent event)
-            throws Exception
+        throws Exception
     {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(
-                Objects.requireNonNull(
-                        Thread.currentThread().getContextClassLoader()
-                                .getResource("view/people.fxml")));
+            Objects.requireNonNull(
+                Thread.currentThread().getContextClassLoader()
+                      .getResource("view/people.fxml")));
         stage.setScene(new Scene(root));
         stage.setTitle("testing");
         stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
-                ((Node)event.getSource()).getScene().getWindow());
+            ((Node)event.getSource()).getScene().getWindow());
         stage.show();
     }
 
     @FXML
     protected void findRelations(ActionEvent event)
-            throws Exception
+        throws Exception
     {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(
-                Objects.requireNonNull(
-                        Thread.currentThread().getContextClassLoader()
-                                .getResource("view/relations.fxml")));
+            Objects.requireNonNull(
+                Thread.currentThread().getContextClassLoader()
+                      .getResource("view/relations.fxml")));
         stage.setScene(new Scene(root));
         stage.setTitle("testing");
         stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
-                ((Node)event.getSource()).getScene().getWindow());
+            ((Node)event.getSource()).getScene().getWindow());
         stage.show();
     }
 
@@ -94,8 +92,8 @@ public class MainController
         fileChooser.setInitialDirectory(new File("C:\\"));
         fileChooser.setInitialFileName("Dot_file");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Dot Files", "*.dot"));
-        File file = fileChooser.showSaveDialog(new Stage());
+            new FileChooser.ExtensionFilter("Dot Files", "*.dot"));
+        File file = fileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
         if(file != null)
         {
             saveSystem(file, smaple);
@@ -121,10 +119,10 @@ public class MainController
         fileChooser.setInitialDirectory(new File("C:\\"));
         fileChooser.setInitialFileName("Image");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.jpg"),
-                new FileChooser.ExtensionFilter("Image Files", "*.png"),
-                new FileChooser.ExtensionFilter("Image Files", "*.svg"));
-        File file = fileChooser.showSaveDialog(new Stage());
+            new FileChooser.ExtensionFilter("Image Files", "*.jpg"),
+            new FileChooser.ExtensionFilter("Image Files", "*.png"),
+            new FileChooser.ExtensionFilter("Image Files", "*.svg"));
+        File file = fileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
         if(file != null)
         {
             System.out.println("Image file created!");
