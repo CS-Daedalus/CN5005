@@ -20,16 +20,16 @@ public class PeopleController
 
         System.out.println("The button saveSortedPeople was activated");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.setInitialFileName("Sorted_people_txt_file");
+        fileChooser.setInitialFileName("Sorted Names");
         fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Txt Files", "*.txt"));
+            new FileChooser.ExtensionFilter("Text Document", "*.txt"));
         File file = fileChooser.showSaveDialog(new Stage());
         if(file != null)
         {
             saveSystem(file, sample);
-            System.out.println("Txt file created!");
-            System.out.println("Txt filename: " + file.getName());
-            System.out.println("Txt absolutePath: " + file.getAbsolutePath());
+            System.out.println("Text document successfully created!");
+            System.out.println("File name: " + file.getName());
+            System.out.println("File Path: " + file.getAbsolutePath());
         }
         else
         {
