@@ -63,7 +63,10 @@ public class RelationsController
 
     private void unlockButton () { confirmButton.setDisable(!(SelectA && SelectB)); }
 
-    public void findRelation() { outputLabel.setText("You have selected the following names: "+getSelection(listViewA)+" and "+getSelection(listViewB)); }
+    public void findRelation() { outputLabel.setText(
+        String.format("You have selected the following names: %s and %s",
+                      getSelection(listViewA),
+                      getSelection(listViewB))); }
 
     private String getSelection (ListView list) { return String.valueOf(list.getSelectionModel().getSelectedItems()); }
 }
