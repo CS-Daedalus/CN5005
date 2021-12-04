@@ -30,7 +30,8 @@ public class RelationsController
     private final ObservableList<String> observableListA = FXCollections.observableArrayList();
     private final ObservableList<String> observableListB = FXCollections.observableArrayList();
 
-    public void setListView() {
+    @FXML
+    public void initialize() {
 
         peopleList.add("PersonA");
         peopleList.add("PersonD");
@@ -48,7 +49,4 @@ public class RelationsController
 
         outputLabel.setText("It works!");
     }
-
-    @FXML
-    void initialize() { setListView(); }
 }
