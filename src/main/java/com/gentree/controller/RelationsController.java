@@ -30,6 +30,9 @@ public class RelationsController
     private final ObservableList<String> observableListA = FXCollections.observableArrayList();
     private final ObservableList<String> observableListB = FXCollections.observableArrayList();
 
+    private boolean SelectA = false;
+    private boolean SelectB = false;
+
     @FXML
     public void initialize() {
 
@@ -44,6 +47,20 @@ public class RelationsController
         listViewA.setItems(observableListA);
         listViewB.setItems(observableListB);
     }
+
+    public void checkSelectionA () {
+
+        SelectA = (getSelection(listViewA) != "[]");
+        unlockButton();
+    }
+
+    public void checkSelectionB () {
+
+        SelectB = (getSelection(listViewB) != "[]");
+        unlockButton();
+    }
+
+    private void unlockButton () { confirmButton.setDisable(!(SelectA == true && SelectB == true)); }
 
     public void findRelation() { outputLabel.setText("You have selected the following names: "+getSelection(listViewA)+" and "+getSelection(listViewB)); }
 
