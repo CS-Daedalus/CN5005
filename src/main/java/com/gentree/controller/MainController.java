@@ -1,5 +1,6 @@
 package com.gentree.controller;
 
+import com.gentree.common.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -89,7 +90,7 @@ public class MainController
         String smaple = "contents of the dot file";
 
         System.out.println("The button openExportDot was activated");
-        fileChooser.setInitialDirectory(new File("C:\\"));
+        fileChooser.setInitialDirectory(new File(Util.USER_HOME_DIR));
         fileChooser.setInitialFileName("Dot_file");
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Dot Files", "*.dot"));
@@ -116,7 +117,7 @@ public class MainController
 
 
         System.out.println("The button openExportDot was activated");
-        fileChooser.setInitialDirectory(new File("C:\\"));
+        fileChooser.setInitialDirectory(new File(Util.USER_HOME_DIR));
         fileChooser.setInitialFileName("Image");
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Image Files", "*.jpg"),
