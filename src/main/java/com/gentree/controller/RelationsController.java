@@ -60,7 +60,7 @@ public class RelationsController
         unlockButton();
     }
 
-    private void unlockButton () { confirmButton.setDisable(!(SelectA == true && SelectB == true)); }
+    private void unlockButton () { confirmButton.setDisable(!(SelectA && SelectB)); }
 
     public void findRelation() { outputLabel.setText("You have selected the following names: "+getSelection(listViewA)+" and "+getSelection(listViewB)); }
 
