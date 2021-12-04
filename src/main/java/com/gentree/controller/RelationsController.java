@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RelationsController
 {
@@ -50,13 +51,13 @@ public class RelationsController
 
     public void checkSelectionA () {
 
-        SelectA = (getSelection(listViewA) != "[]");
+        SelectA = (!Objects.equals(getSelection(listViewA), "[]"));
         unlockButton();
     }
 
     public void checkSelectionB () {
 
-        SelectB = (getSelection(listViewB) != "[]");
+        SelectB = (!Objects.equals(getSelection(listViewB), "[]"));
         unlockButton();
     }
 
