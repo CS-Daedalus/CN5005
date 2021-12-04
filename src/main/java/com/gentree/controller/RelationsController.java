@@ -27,20 +27,22 @@ public class RelationsController
     @FXML
     private Button myButton;
 
-    private List<String> stringListA = new ArrayList<>(5);
-    private List<String> stringListB = new ArrayList<>(5);
+    private final List<String> peopleList = new ArrayList<>();
 
-    private ObservableList observableListA = FXCollections.observableArrayList();
-    private ObservableList observableListB = FXCollections.observableArrayList(stringListB);
+    private final ObservableList<String> observableListA = FXCollections.observableArrayList();
+    private final ObservableList<String> observableListB = FXCollections.observableArrayList();
 
     public void setListView() {
 
-        stringListA.add("PersonA");
-        observableListA.setAll(stringListA);
-        listViewA.setItems(observableListA);
+        peopleList.add("PersonA");
+        peopleList.add("PersonD");
+        peopleList.add("PersonC");
+        peopleList.add("PersonB");
 
-        stringListB.add("PersonB");
-        observableListB.setAll(stringListB);
+        observableListA.setAll(peopleList);
+        observableListB.setAll(peopleList);
+
+        listViewA.setItems(observableListA);
         listViewB.setItems(observableListB);
     }
 
