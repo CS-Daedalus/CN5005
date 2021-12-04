@@ -11,7 +11,7 @@ public class PeopleController
 {
 
     @FXML
-    protected void saveSortedPeople(javafx.event.ActionEvent actionEvent) {
+    protected void saveSortedPeople() {
 
         System.out.println("Saving the txt file with the sorted people...");
 
