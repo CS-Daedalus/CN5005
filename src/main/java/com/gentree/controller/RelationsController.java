@@ -10,6 +10,7 @@ import javafx.scene.control.ListView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class RelationsController
 {
@@ -37,13 +38,22 @@ public class RelationsController
     @FXML
     public void initialize() {
 
-        peopleList.add("PersonA");
-        peopleList.add("PersonD");
-        peopleList.add("PersonC");
-        peopleList.add("PersonB");
+        //demo samples names--------------------------------------------------------------------
+        peopleList.add("Robert Baratheon");
+        peopleList.add("Cersei Lannister");
+        peopleList.add("Jofrey Baratheon");
+        peopleList.add("Myrcella Baratheon");
+        peopleList.add("Tommen Baratheon");
+        peopleList.add("Gendry");
+        peopleList.add("Cassana Estermont");
+        peopleList.add("Margaret Tyrell");
+        peopleList.add("Stannis Baratheon");
+        peopleList.add("Selyse Baratheon");
+        peopleList.add("Shireen Baratheon");
+        //--------------------------------------------------------------------------------------
 
-        observableListA.setAll(peopleList);
-        observableListB.setAll(peopleList);
+        observableListA.setAll(peopleList.stream().sorted().collect(Collectors.toList()));
+        observableListB.setAll(peopleList.stream().sorted().collect(Collectors.toList()));
 
         listViewA.setItems(observableListA);
         listViewB.setItems(observableListB);
