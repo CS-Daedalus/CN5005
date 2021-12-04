@@ -103,7 +103,7 @@ public class MainController
         }
         else
         {
-            System.out.println("Aborded");
+            System.out.println("Aborted");
         }
     }
 
