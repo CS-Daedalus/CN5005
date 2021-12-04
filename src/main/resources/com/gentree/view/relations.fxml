@@ -6,17 +6,15 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gentree.controller.RelationsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gentree.controller.RelationsController">
 
-    <children>
-        <ListView fx:id="listViewA" layoutX="14.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0" AnchorPane.leftAnchor="5.0" />
-        <ListView fx:id="listViewB" layoutX="188.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="150.0" AnchorPane.rightAnchor="5.0" />
-        <Label fx:id="outputLabel" alignment="CENTER" contentDisplay="TEXT_ONLY" layoutX="164.0" layoutY="434.0" minHeight="-Infinity" minWidth="-Infinity" />
-        <Button fx:id="confirmButton" layoutX="146.0" layoutY="461.0" minHeight="-Infinity" minWidth="-Infinity" text="Confirm" />
-    </children>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
 
+    <ListView fx:id="listViewA" layoutX="20.0" layoutY="35.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="324.0" prefWidth="289.0" AnchorPane.topAnchor="35.0" />
+    <ListView fx:id="listViewB" layoutX="337.0" layoutY="35.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="324.0" prefWidth="289.0" AnchorPane.topAnchor="35.0" />
+    <Label fx:id="outputLabel" alignment="CENTER" contentDisplay="TEXT_ONLY" layoutX="218.0" layoutY="371.0" minHeight="-Infinity" minWidth="-Infinity" text="Select two names to find their relation." AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="370.0" />
+    <Button fx:id="confirmButton" layoutX="291.0" layoutY="441.0" minHeight="-Infinity" minWidth="-Infinity" text="Find Relation" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" />
 
 </AnchorPane>
