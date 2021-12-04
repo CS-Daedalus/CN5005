@@ -31,13 +31,13 @@ public class PeopleController
         finalNameList.setAll(NameList);
         NamesList.setItems(finalNameList);
     }
+
     @FXML
     protected void saveSortedPeople() {
 
         System.out.println("Saving the txt file with the sorted people...");
 
         FileChooser fileChooser = new FileChooser();
-        String sample = "contents of the txt file";
 
         System.out.println("The button saveSortedPeople was activated");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -47,7 +47,7 @@ public class PeopleController
         File file = fileChooser.showSaveDialog(new Stage());
         if(file != null)
         {
-            saveSystem(file, sample);
+            saveSystem(file, NameList);
             System.out.println("Text document successfully created!");
             System.out.println("File name: " + file.getName());
             System.out.println("File Path: " + file.getAbsolutePath());
@@ -59,12 +59,14 @@ public class PeopleController
 
     }
 
-    private void saveSystem(File file, String content)
+    private void saveSystem(File file, List<String> nList )
     {
         try
         {
             PrintWriter printWriter = new PrintWriter(file);
-            printWriter.write(content);
+            for (int i = 0; i < nList.size(); i++ ){
+                printWriter.println(nList.get(i));
+            }
             printWriter.close();
         }
         catch (FileNotFoundException e)
