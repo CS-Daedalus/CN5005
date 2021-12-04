@@ -16,6 +16,7 @@ public final class Util
     public static final String TITLE = "CN5005 - Genealogy Tree";
     public static final String OS = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
+    public static final String USER_HOME_DIR = System.getProperty("user.home");
 
     /**
      * Utility classes, which are collections of static members, are not meant to be instantiated.
@@ -51,5 +52,36 @@ public final class Util
     public static Collection<Path> convertListFileToListPath(Collection<File> fileList)
     {
         return fileList.stream().map(File::toPath).collect(Collectors.toList());
+    }
+
+    /**
+     * Capitalise each word in a string.
+     * @param s the string to be capitalised.
+     * @return the capitalised string.
+     */
+    public static String capitalise(String s)
+    {
+        if (s.length() == 0)
+            return s;
+        String[] words = s.split(" ");
+        StringBuilder sb = new StringBuilder();
+
+        for (String word : words)
+        {
+            sb.append(Character.toUpperCase(word.charAt(0)))
+              .append(word.substring(1)).append(" ");
+        }
+
+        return sb.toString().trim();
+    }
+
+    /**
+     * Normalise a string to lower case.
+     * @param s the string to be normalised.
+     * @return the normalised string.
+     */
+    public static String normalise(String s)
+    {
+        return s.trim().toLowerCase();
     }
 }
