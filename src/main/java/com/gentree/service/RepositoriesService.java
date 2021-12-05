@@ -82,11 +82,6 @@ public class RepositoriesService
     {
         private final Map<String, Person> store = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
-        private PersonRepository()
-        {
-            // Prevent instantiation
-        }
-
         public void insert(Person.@NotNull Tuple entity)
         {
             store.put(entity.fullName, new Person(entity.fullName, entity.gender));
@@ -110,11 +105,6 @@ public class RepositoriesService
     private class RelationRepository
     {
         private final Set<Relation> store = new HashSet<>();
-
-        private RelationRepository()
-        {
-            // Prevent instantiation
-        }
 
         public void insert(Relation.@NotNull Tuple entity)
         {
