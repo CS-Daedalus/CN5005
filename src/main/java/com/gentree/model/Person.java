@@ -1,6 +1,7 @@
 package com.gentree.model;
 
 import com.gentree.common.Util;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class Person
         return children;
     }
 
-    public void addChild(Person child)
+    public void addChild(@NotNull Person child)
     {
         child.setFather(this);
         this.children.add(child);
@@ -86,7 +87,7 @@ public class Person
         this.father = father;
     }
 
-    private void setParent(Person parent)
+    private void setParent(@NotNull Person parent)
     {
         switch (parent.gender)
         {
@@ -140,7 +141,7 @@ public class Person
          * @param gender the String Gender value
          * @return Gender enum
          */
-        private static Gender resolveGender(String gender)
+        private static @NotNull Gender resolveGender(String gender)
         {
             try
             {
@@ -160,7 +161,7 @@ public class Person
          * @return The value of current enum
          */
         @Override
-        public String toString()
+        public @NotNull String toString()
         {
             return Util.normaliseLower(name());
         }

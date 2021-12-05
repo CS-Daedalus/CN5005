@@ -1,5 +1,8 @@
 package com.gentree;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -9,7 +12,8 @@ public class Helper
 {
     static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-    public static File getResourceFile(String path)
+    @Contract("_ -> new")
+    public static @NotNull File getResourceFile(String path)
         throws UnsupportedEncodingException
     {
         return new File(URLDecoder.decode(

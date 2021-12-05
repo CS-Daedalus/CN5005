@@ -1,12 +1,8 @@
 package com.gentree.common;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collection;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Locale;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Utility class for common methods and constants.
@@ -17,7 +13,6 @@ public final class Util
     public static final int APP_HEIGHT = 400;
     public static final String TITLE = "CN5005 - Genealogy Tree";
     public static final String OS = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
-    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String USER_HOME_DIR = System.getProperty("user.home");
 
     /**
@@ -47,21 +42,11 @@ public final class Util
     }
 
     /**
-     * Converts a collection of File objects to a collection of Path objects.
-     * @param fileList the collection of File objects.
-     * @return the collection of Path objects.
-     */
-    public static Collection<Path> convertListFileToListPath(Collection<File> fileList)
-    {
-        return fileList.stream().map(File::toPath).collect(Collectors.toList());
-    }
-
-    /**
      * Capitalise each word in a string.
      * @param s the string to be capitalised.
      * @return the capitalised string.
      */
-    public static String capitalise(String s)
+    public static @NotNull String capitalise(@NotNull String s)
     {
         if (s.length() == 0)
             return s;
@@ -84,7 +69,7 @@ public final class Util
      * @param s the string to be normalised.
      * @return the normalised string.
      */
-    public static String normaliseLower(String s)
+    public static @NotNull String normaliseLower(@NotNull String s)
     {
         return s.trim().toLowerCase(Locale.getDefault());
     }
@@ -94,7 +79,7 @@ public final class Util
      * @param s the string to be normalised.
      * @return the normalised string.
      */
-    public static String normaliseUpper(String s)
+    public static @NotNull String normaliseUpper(String s)
     {
         return normaliseLower(s).toUpperCase();
     }

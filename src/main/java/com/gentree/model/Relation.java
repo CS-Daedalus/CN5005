@@ -1,6 +1,7 @@
 package com.gentree.model;
 
 import com.gentree.common.Util;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Locale;
@@ -17,7 +18,7 @@ public class Relation
     private Person person2;
     private Bond bond;
 
-    public Relation(Person person1, Person person2, Bond bond)
+    public Relation(Person person1, Person person2, String bond)
     {
         setPerson1(person1);
         setPerson2(person2);
@@ -49,9 +50,9 @@ public class Relation
         return bond;
     }
 
-    public void setBond(Bond bond)
+    public void setBond(String bond)
     {
-        this.bond = bond;
+        this.bond = Bond.resolveBond(bond);
     }
 
     /**
@@ -125,7 +126,7 @@ public class Relation
          * @param bond the String Bond value
          * @return Bond enum
          */
-        private static Bond resolveBond(String bond)
+        private static @NotNull Bond resolveBond(String bond)
         {
             try
             {
@@ -145,7 +146,7 @@ public class Relation
          * @return The value of current enum
          */
         @Override
-        public String toString()
+        public @NotNull String toString()
         {
             return Util.normaliseLower(name());
         }

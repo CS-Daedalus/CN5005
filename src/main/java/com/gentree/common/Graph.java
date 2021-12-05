@@ -1,6 +1,8 @@
 package com.gentree.common;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -356,7 +358,8 @@ public class Graph<V extends Comparable<V>>
      * @param vertex IVertex
      * @return Vertex
      */
-    private Vertex<V> validate(IVertex<V> vertex)
+    @Contract(value = "null -> fail", pure = true)
+    private @NotNull Vertex<V> validate(IVertex<V> vertex)
     {
         if (!(vertex instanceof Vertex)) {
             throw new IllegalArgumentException("Invalid vertex");
@@ -365,7 +368,7 @@ public class Graph<V extends Comparable<V>>
         return (Vertex<V>) vertex;
     }
 
-    private Edge validate(IEdge edge)
+    private @NotNull Edge validate(@NotNull IEdge edge)
     {
         if (edge.getClass() != Edge.class)
             throw new IllegalArgumentException("Invalid edge");
@@ -379,7 +382,8 @@ public class Graph<V extends Comparable<V>>
      * @param vertex value of type T
      * @return Vertex, or <code>null</code> if not found.
      */
-    private Vertex<V> getVertex(V vertex)
+    @Contract(pure = true)
+    private @Nullable Vertex<V> getVertex(V vertex)
     {
         for (Vertex<V> v : vertices)
         {
@@ -451,7 +455,7 @@ public class Graph<V extends Comparable<V>>
      * @param vertex Vertex
      * @return Iterable set of Edge objects
      */
-    private Iterable<IEdge> inEdges(IVertex<V> vertex)
+    private @NotNull Iterable<IEdge> inEdges(IVertex<V> vertex)
     {
         return validate(vertex).getIncoming().values();
     }
@@ -462,7 +466,7 @@ public class Graph<V extends Comparable<V>>
      * @param vertex Vertex
      * @return Iterable set of Edge objects
      */
-    private Iterable<IEdge> outEdge(IVertex<V> vertex)
+    private @NotNull Iterable<IEdge> outEdge(IVertex<V> vertex)
     {
         return validate(vertex).getOutgoing().values();
     }
@@ -484,7 +488,7 @@ public class Graph<V extends Comparable<V>>
      *
      * @param vertex vertex
      */
-    private void depthFirstSearch(IVertex<V> vertex)
+    private void depthFirstSearch(@NotNull IVertex<V> vertex)
     {
         vertex.setVisitState(VisitState.VISITING);
 
@@ -559,7 +563,7 @@ public class Graph<V extends Comparable<V>>
      * @param target Vertex end of path
      * @return string List of vertices and weights
      */
-    private List<String> getShortestPath(@NotNull Vertex<V> target)
+    private @NotNull List<String> getShortestPath(@NotNull Vertex<V> target)
     {
         List<String> path = new ArrayList<>();
 
@@ -716,7 +720,7 @@ public class Graph<V extends Comparable<V>>
          * @param other Vertex to compare to
          */
         @Override
-        public int compareTo(Vertex<V> other)
+        public int compareTo(@NotNull Vertex<V> other)
         {
             return Double.compare(minDistance, other.getMinDistance());
         }

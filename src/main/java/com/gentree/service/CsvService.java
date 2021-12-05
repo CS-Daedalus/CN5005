@@ -3,6 +3,8 @@ package com.gentree.service;
 import com.gentree.model.Person;
 import com.gentree.model.Relation;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -21,8 +23,8 @@ public final class CsvService
     // Making safe the use of same instance via multiple threads at the same time
     private static volatile CsvService instance;
     public static final String CSV_SEPARATOR = ",";
-    private final Deque<Person.Tuple> persons         = new ArrayDeque<>();
-    private final Deque<Relation.Tuple> relations = new ArrayDeque<>();
+    private final Deque<Person.Tuple> personTuples = new ArrayDeque<>();
+    private final Deque<Relation.Tuple> relationTuples = new ArrayDeque<>();
 
     private CsvService()
     {
@@ -55,7 +57,8 @@ public final class CsvService
      * @throws IOException if the file cannot be read
      * @throws IllegalArgumentException if the file is not valid
      */
-    public ImmutablePair<Deque<Person.Tuple>, Deque<Relation.Tuple>> readFile(final String fileName)
+    @Contract("_ -> new")
+    public @NotNull ImmutablePair<Deque<Person.Tuple>, Deque<Relation.Tuple>> readFile(final String fileName)
         throws IOException, IllegalArgumentException
     {
         try (
@@ -74,28 +77,28 @@ public final class CsvService
             }
         }
 
-        if (persons.isEmpty() || relations.isEmpty())
+        if (personTuples.isEmpty() || relationTuples.isEmpty())
             throw new IllegalArgumentException("The file is either empty or missing either people or relations.");
 
-        return new ImmutablePair<>(persons, relations);
+        return new ImmutablePair<>(personTuples, relationTuples);
     }
 
     /**
      * Returns the persons
      * @return the persons
      */
-    public Deque<Person.Tuple> getPersons()
+    public Deque<Person.Tuple> getPersonTuples()
     {
-        return persons;
+        return personTuples;
     }
 
     /**
      * Returns the relations
      * @return the relations
      */
-    public Deque<Relation.Tuple> getRelations()
+    public Deque<Relation.Tuple> getRelationTuples()
     {
-        return relations;
+        return relationTuples;
     }
 
     /**
@@ -103,8 +106,8 @@ public final class CsvService
      */
     public void reset()
     {
-        persons.clear();
-        relations.clear();
+        personTuples.clear();
+        relationTuples.clear();
     }
 
     /**
@@ -141,11 +144,11 @@ public final class CsvService
      * Adds a person to the Deque
      * @param split the split line
      */
-    private void addPerson(String[] split)
+    private void addPerson(String @NotNull [] split)
     {
         // split[0] = full name
         // split[1] = gender
-        persons.add(new Person.Tuple(){{
+        personTuples.add(new Person.Tuple(){{
             fullName = split[0];
             gender = split[1];
         }});
@@ -155,12 +158,12 @@ public final class CsvService
      * Adds a relation to the Deque
      * @param split the split line
      */
-    private void addRelations(String[] split)
+    private void addRelations(String @NotNull [] split)
     {
         // split[0] = full name (person1)
         // split[1] = bond
         // split[2] = full name (person2)
-        relations.add(new Relation.Tuple(){{
+        relationTuples.add(new Relation.Tuple(){{
             person1FullName = split[0];
             bond = split[1];
             person2FullName = split[2];
@@ -173,7 +176,7 @@ public final class CsvService
      * @return the split line
      * @throws IllegalArgumentException if the line is invalid
      */
-    private String[] sanityCheck(final String line)
+    private @NotNull String @NotNull [] sanityCheck(final @NotNull String line)
         throws IllegalArgumentException
     {
         final String[] split = Arrays.stream(line.split(CSV_SEPARATOR)).map(String::trim).toArray(String[]::new);
