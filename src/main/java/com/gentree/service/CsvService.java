@@ -26,9 +26,13 @@ public final class CsvService
 
     private CsvService()
     {
-
+        // Prevent instantiation
     }
 
+    /**
+     * Thread-safe singleton implementation
+     * @return the instance
+     */
     public static CsvService getInstance()
     {
         CsvService localInstance = instance;
@@ -44,6 +48,13 @@ public final class CsvService
         return localInstance;
     }
 
+    /**
+     * Reads the CSV file and populates the Deque objects of persons and relations
+     * @param fileName the file name
+     * @return the number of lines read
+     * @throws IOException if the file cannot be read
+     * @throws IllegalArgumentException if the file is not valid
+     */
     public ImmutablePair<Deque<Person.Tuple>, Deque<Relation.Tuple>> readFile(final String fileName)
         throws IOException, IllegalArgumentException
     {
@@ -96,6 +107,12 @@ public final class CsvService
         relations.clear();
     }
 
+    /**
+     * Process the given line
+     * @param line the line
+     * @param lineNumber the line number
+     * @throws IllegalArgumentException if the line is invalid
+     */
     private void processLine(String line, long lineNumber)
         throws IllegalArgumentException
     {
@@ -120,6 +137,10 @@ public final class CsvService
         }
     }
 
+    /**
+     * Adds a person to the Deque
+     * @param split the split line
+     */
     private void addPerson(String[] split)
     {
         // split[0] = full name
@@ -130,6 +151,10 @@ public final class CsvService
         }});
     }
 
+    /**
+     * Adds a relation to the Deque
+     * @param split the split line
+     */
     private void addRelations(String[] split)
     {
         // split[0] = full name (person1)
@@ -142,6 +167,12 @@ public final class CsvService
         }});
     }
 
+    /**
+     * Sanity checks the given line
+     * @param line the line
+     * @return the split line
+     * @throws IllegalArgumentException if the line is invalid
+     */
     private String[] sanityCheck(final String line)
         throws IllegalArgumentException
     {
