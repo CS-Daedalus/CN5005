@@ -54,6 +54,16 @@ public class Relation
         this.bond = bond;
     }
 
+    /**
+     * Tuple of Relation object
+     */
+    public static class Tuple
+    {
+        public String person1FullName;
+        public String person2FullName;
+        public String bond;
+    }
+
     public enum Bond
     {
         MOTHER,

@@ -100,6 +100,15 @@ public class Person
         }
     }
 
+    /**
+     * Tuple of Person object
+     */
+    public static class Tuple
+    {
+        public String fullName;
+        public String gender;
+    }
+
     public enum Gender
     {
         WOMAN,

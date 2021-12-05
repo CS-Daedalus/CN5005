@@ -21,8 +21,8 @@ public final class CsvService
     // Making safe the use of same instance via multiple threads at the same time
     private static volatile CsvService instance;
     public static final String CSV_SEPARATOR = ",";
-    private final Deque<Person> persons         = new ArrayDeque<>();
-    private final Deque<Relation> relationships = new ArrayDeque<>();
+    private final Deque<Person.Tuple> persons         = new ArrayDeque<>();
+    private final Deque<Relation.Tuple> relations = new ArrayDeque<>();
 
     private CsvService()
     {
@@ -44,7 +44,7 @@ public final class CsvService
         return localInstance;
     }
 
-    public ImmutablePair<Deque<Person>, Deque<Relation>> readFile(final String fileName)
+    public ImmutablePair<Deque<Person.Tuple>, Deque<Relation.Tuple>> readFile(final String fileName)
         throws IOException, IllegalArgumentException
     {
         try (
@@ -63,16 +63,37 @@ public final class CsvService
             }
         }
 
-        if (persons.isEmpty() || relationships.isEmpty())
-            throw new IllegalArgumentException("The file is either empty or missing people or relations.");
+        if (persons.isEmpty() || relations.isEmpty())
+            throw new IllegalArgumentException("The file is either empty or missing either people or relations.");
 
-        return new ImmutablePair<>(persons, relationships);
+        return new ImmutablePair<>(persons, relations);
     }
 
+    /**
+     * Returns the persons
+     * @return the persons
+     */
+    public Deque<Person.Tuple> getPersons()
+    {
+        return persons;
+    }
+
+    /**
+     * Returns the relations
+     * @return the relations
+     */
+    public Deque<Relation.Tuple> getRelations()
+    {
+        return relations;
+    }
+
+    /**
+     * Resets the Deque objects of persons and relations
+     */
     public void reset()
     {
         persons.clear();
-        relationships.clear();
+        relations.clear();
     }
 
     private void processLine(String line, long lineNumber)
@@ -87,7 +108,7 @@ public final class CsvService
                 break;
 
             case 3:
-                addRelationships(split);
+                addRelations(split);
                 break;
 
             default:
@@ -103,13 +124,22 @@ public final class CsvService
     {
         // split[0] = full name
         // split[1] = gender
-        persons.add(new Person(split[0], split[1]));
+        persons.add(new Person.Tuple(){{
+            fullName = split[0];
+            gender = split[1];
+        }});
     }
 
-    private void addRelationships(String[] split)
+    private void addRelations(String[] split)
     {
-        //TODO: To implement
-        //relationships.add(split[0] + "," + split[1] + "," + split[2]);
+        // split[0] = full name (person1)
+        // split[1] = bond
+        // split[2] = full name (person2)
+        relations.add(new Relation.Tuple(){{
+            person1FullName = split[0];
+            bond = split[1];
+            person2FullName = split[2];
+        }});
     }
 
     private String[] sanityCheck(final String line)

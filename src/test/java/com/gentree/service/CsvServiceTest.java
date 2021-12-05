@@ -38,7 +38,7 @@ public class CsvServiceTest
     {
         try
         {
-            ImmutablePair<Deque<Person>, Deque<Relation>> result = csvService.readFile(valid);
+            ImmutablePair<Deque<Person.Tuple>, Deque<Relation.Tuple>> result = csvService.readFile(valid);
             assertNotNull(result);
             assertEquals(13, result.getLeft().size());
             assertEquals(16, result.getRight().size());
