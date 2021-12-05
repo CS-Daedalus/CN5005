@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,32 +24,56 @@ public class Relation
         setBond(bond);
     }
 
+    /**
+     * Returns the person1 of the relation
+     * @return the person1 of the relation
+     */
     public Person getPerson1()
     {
         return person1;
     }
 
-    public void setPerson1(Person person1)
-    {
-        this.person1 = person1;
-    }
-
+    /**
+     * Returns the person2 of the relation
+     * @return the person2 of the relation
+     */
     public Person getPerson2()
     {
         return person2;
     }
 
-    public void setPerson2(Person person2)
-    {
-        this.person2 = person2;
-    }
-
+    /**
+     * Returns the bond of the relation between person1 and person2
+     * @return the bond of the relation between person1 and person2
+     */
     public Bond getBond()
     {
         return bond;
     }
 
-    public void setBond(String bond)
+    /**
+     * Sets the person1 of the relation
+     * @param person1 the person1 to set
+     */
+    private void setPerson1(Person person1)
+    {
+        this.person1 = person1;
+    }
+
+    /**
+     * Sets the person2 of the relation
+     * @param person2 the person2 to set
+     */
+    private void setPerson2(Person person2)
+    {
+        this.person2 = person2;
+    }
+
+    /**
+     * Sets the bond of the relation between person1 and person2
+     * @param bond the bond to set
+     */
+    private void setBond(String bond)
     {
         this.bond = Bond.resolveBond(bond);
     }
