@@ -21,8 +21,8 @@ public final class CsvService
     // Making safe the use of same instance via multiple threads at the same time
     private static volatile CsvService instance;
     public static final String CSV_SEPARATOR = ",";
-    private final Deque<String> persons       = new ArrayDeque<>();
-    private final Deque<String> relationships = new ArrayDeque<>();
+    private final Deque<Person> persons         = new ArrayDeque<>();
+    private final Deque<Relation> relationships = new ArrayDeque<>();
 
     private CsvService()
     {
@@ -44,7 +44,7 @@ public final class CsvService
         return localInstance;
     }
 
-    public ImmutablePair<Deque<String>, Deque<String>> readFile(final String fileName)
+    public ImmutablePair<Deque<Person>, Deque<Relation>> readFile(final String fileName)
         throws IOException, IllegalArgumentException
     {
         try (
@@ -101,12 +101,15 @@ public final class CsvService
 
     private void addPerson(String[] split)
     {
-        persons.add(split[0] + "," + split[1]);
+        // split[0] = full name
+        // split[1] = gender
+        persons.add(new Person(split[0], split[1]));
     }
 
     private void addRelationships(String[] split)
     {
-        relationships.add(split[0] + "," + split[1] + "," + split[2]);
+        //TODO: To implement
+        //relationships.add(split[0] + "," + split[1] + "," + split[2]);
     }
 
     private String[] sanityCheck(final String line)
@@ -118,14 +121,14 @@ public final class CsvService
             throw new IllegalArgumentException(
                 String.format(Locale.getDefault(), "Line [%s] is not valid", line));
 
-        if (2 == split.length && !Person.Gender.isValid(split[1]))
+        if (2 == split.length && !Person.Gender.isSupported(split[1]))
             throw new IllegalArgumentException(
                 String.format(
                     Locale.getDefault(),
                     "Unsupported gender in line: [%s], accepting: %s, \"%s\" is given.",
                     line, Person.Gender.getSupportedGenders(), split[1]));
 
-        if (3 == split.length && !Relation.Bond.isValid(split[1]))
+        if (3 == split.length && !Relation.Bond.isSupported(split[1]))
             throw new IllegalArgumentException(
                 String.format(
                     Locale.getDefault(),
