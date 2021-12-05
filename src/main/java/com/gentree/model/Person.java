@@ -113,7 +113,6 @@ public class Person
         {
             return Stream.of(values())
                          .map(Enum::name)
-                         .map(Util::normalise)
                          .collect(Collectors.toList());
         }
 
@@ -124,7 +123,7 @@ public class Person
          */
         public static boolean isSupported(String gender)
         {
-            return getSupportedGenders().contains(Util.normalise(gender));
+            return getSupportedGenders().contains(Util.normaliseUpper(gender));
         }
 
         /**
@@ -135,12 +134,13 @@ public class Person
         private static Gender resolveGender(String gender)
         {
             // Resolve the gender string to Gender enum
-            Optional<Gender> g = Util.getEnumByValue(Gender.class, Util.normalise(gender));
+            Optional<Gender> g = Util.getEnumByValue(Gender.class, Util.normaliseUpper(gender));
 
             // Check if the optional variable is present
             if (!g.isPresent())
                 throw new IllegalArgumentException(
-                    String.format(Locale.getDefault(), "Gender '%s' is not supported by the system.", gender));
+                    String.format(
+                        Locale.getDefault(), "Gender '%s' is not supported by the system.", gender));
 
             // Return the found Enum property
             return g.get();
@@ -153,7 +153,7 @@ public class Person
         @Override
         public String toString()
         {
-            return Util.normalise(name());
+            return Util.normaliseLower(name());
         }
     }
 }

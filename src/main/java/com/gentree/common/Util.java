@@ -70,6 +70,8 @@ public final class Util
 
         for (String word : words)
         {
+            word = normaliseLower(word);
+
             sb.append(Character.toUpperCase(word.charAt(0)))
               .append(word.substring(1)).append(" ");
         }
@@ -82,9 +84,19 @@ public final class Util
      * @param s the string to be normalised.
      * @return the normalised string.
      */
-    public static String normalise(String s)
+    public static String normaliseLower(String s)
     {
         return s.trim().toLowerCase(Locale.getDefault());
+    }
+
+    /**
+     * Normalise a string to upper case.
+     * @param s the string to be normalised.
+     * @return the normalised string.
+     */
+    public static String normaliseUpper(String s)
+    {
+        return normaliseLower(s).toUpperCase();
     }
 
     /**
@@ -95,7 +107,7 @@ public final class Util
     public static <T extends Enum<T>> Optional<T> getEnumByValue(Class<T> e, String value)
     {
         return Arrays.stream(e.getEnumConstants())
-                     .filter(v -> Util.normalise(v.name()).equals(Util.normalise(value)))
+                     .filter(v -> v.name().equals(normaliseUpper(value)))
                      .findFirst();
     }
 }

@@ -2,15 +2,57 @@ package com.gentree.model;
 
 import com.gentree.common.Util;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Describes the relation bond that person 1 has with person 2.
+ */
 public class Relation
 {
+    private Person person1;
+    private Person person2;
+    private Bond bond;
+
+    public Relation(Person person1, Person person2, Bond bond)
+    {
+        setPerson1(person1);
+        setPerson2(person2);
+        setBond(bond);
+    }
+
+    public Person getPerson1()
+    {
+        return person1;
+    }
+
+    public void setPerson1(Person person1)
+    {
+        this.person1 = person1;
+    }
+
+    public Person getPerson2()
+    {
+        return person2;
+    }
+
+    public void setPerson2(Person person2)
+    {
+        this.person2 = person2;
+    }
+
+    public Bond getBond()
+    {
+        return bond;
+    }
+
+    public void setBond(Bond bond)
+    {
+        this.bond = bond;
+    }
 
     public enum Bond
     {
@@ -48,41 +90,41 @@ public class Relation
         //NONE;
 
         /**
-         * Returns the list of supported relations
-         * @return the list of supported relations
+         * Returns the list of supported bonds
+         * @return the list of supported bonds
          */
-        public static List<String> getSupportedRelations()
+        public static List<String> getSupportedBonds()
         {
             return Stream.of(values())
                          .map(Enum::name)
-                         .map(Util::capitalise)
                          .collect(Collectors.toList());
         }
 
         /**
-         * Returns true if the relation is supported, false otherwise
-         * @param relation String value of gender
-         * @return true when relation is supported, false when not
+         * Returns true if the bond is supported, false otherwise
+         * @param bond String value of gender
+         * @return true when bond is supported, false when not
          */
-        public static boolean isSupported(String relation)
+        public static boolean isSupported(String bond)
         {
-            return getSupportedRelations().contains(Util.normalise(relation));
+            return getSupportedBonds().contains(Util.normaliseUpper(bond));
         }
 
         /**
          * Returns the Bond based on string value
-         * @param relation the String Bond value
+         * @param bond the String Bond value
          * @return Bond enum
          */
-        private static Bond resolveRelation(String relation)
+        private static Bond resolveBond(String bond)
         {
-            // Resolve the relation string to Bond enum
-            Optional<Bond> b = Util.getEnumByValue(Bond.class, Util.capitalise(relation));
+            // Resolve the bond string to Bond enum
+            Optional<Bond> b = Util.getEnumByValue(Bond.class, Util.normaliseUpper(bond));
 
             // Check if the optional variable is present
             if (!b.isPresent())
                 throw new IllegalArgumentException(
-                    String.format(Locale.getDefault(), "Relation '%s' is not supported by the system.", relation));
+                    String.format(
+                        Locale.getDefault(), "Bond '%s' is not supported by the system.", bond));
 
             // Return the found Enum property
             return b.get();
@@ -95,7 +137,7 @@ public class Relation
         @Override
         public String toString()
         {
-            return Util.capitalise(name());
+            return Util.normaliseLower(name());
         }
     }
 }

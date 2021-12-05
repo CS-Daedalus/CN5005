@@ -133,7 +133,7 @@ public final class CsvService
                 String.format(
                     Locale.getDefault(),
                     "Unsupported relation in line: [%s], accepting: %s, \"%s\" is given.",
-                    line, Relation.Bond.getSupportedRelations(), split[1]));
+                    line, Relation.Bond.getSupportedBonds(), split[1]));
 
         return split;
     }
