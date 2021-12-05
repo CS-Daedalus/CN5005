@@ -127,17 +127,17 @@ public class Relation
          */
         private static Bond resolveBond(String bond)
         {
-            // Resolve the bond string to Bond enum
-            Optional<Bond> b = Util.getEnumByValue(Bond.class, Util.normaliseUpper(bond));
-
-            // Check if the optional variable is present
-            if (!b.isPresent())
+            try
+            {
+                // Resolve the bond string to Bond enum
+                return valueOf(Bond.class, Util.normaliseUpper(bond));
+            }
+            catch (IllegalArgumentException e)
+            {
                 throw new IllegalArgumentException(
                     String.format(
                         Locale.getDefault(), "Bond '%s' is not supported by the system.", bond));
-
-            // Return the found Enum property
-            return b.get();
+            }
         }
 
         /**

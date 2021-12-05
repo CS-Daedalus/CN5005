@@ -142,17 +142,17 @@ public class Person
          */
         private static Gender resolveGender(String gender)
         {
-            // Resolve the gender string to Gender enum
-            Optional<Gender> g = Util.getEnumByValue(Gender.class, Util.normaliseUpper(gender));
-
-            // Check if the optional variable is present
-            if (!g.isPresent())
+            try
+            {
+                // Resolve the gender string to Gender enum
+                return valueOf(Gender.class, Util.normaliseUpper(gender));
+            }
+            catch (IllegalArgumentException e)
+            {
                 throw new IllegalArgumentException(
                     String.format(
                         Locale.getDefault(), "Gender '%s' is not supported by the system.", gender));
-
-            // Return the found Enum property
-            return g.get();
+            }
         }
 
         /**

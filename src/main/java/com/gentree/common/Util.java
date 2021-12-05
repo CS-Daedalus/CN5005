@@ -98,16 +98,4 @@ public final class Util
     {
         return normaliseLower(s).toUpperCase();
     }
-
-    /**
-     * Find the first element in the list that matches the given value if it exists
-     * @param value The value to match
-     * @return The first element in the list that matches the given value if it exists
-     */
-    public static <T extends Enum<T>> Optional<T> getEnumByValue(Class<T> e, String value)
-    {
-        return Arrays.stream(e.getEnumConstants())
-                     .filter(v -> v.name().equals(normaliseUpper(value)))
-                     .findFirst();
-    }
 }
