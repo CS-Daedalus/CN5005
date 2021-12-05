@@ -1,6 +1,8 @@
 package com.gentree.service;
 
 import com.gentree.Helper;
+import com.gentree.model.Person;
+import com.gentree.model.Relation;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,7 +38,7 @@ public class CsvServiceTest
     {
         try
         {
-            ImmutablePair<Deque<String>, Deque<String>> result = csvService.readFile(valid);
+            ImmutablePair<Deque<Person>, Deque<Relation>> result = csvService.readFile(valid);
             assertNotNull(result);
             assertEquals(13, result.getLeft().size());
             assertEquals(16, result.getRight().size());
