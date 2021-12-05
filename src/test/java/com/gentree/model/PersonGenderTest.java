@@ -19,14 +19,14 @@ public class PersonGenderTest
     {
         List<String> actual = Person.Gender.getSupportedGenders();
         List<String> expected = new ArrayList<>(Arrays.asList(
-            "woman","man"
+            "WOMAN","MAN"
         ));
 
         assertEquals(expected, actual);
     }
 
     @Test
-    @DisplayName("Test unsupported gender")
+    @DisplayName("Test supported gender")
     public void testSupportedGender()
     {
         assertTrue(Person.Gender.isSupported("man"));
@@ -44,10 +44,10 @@ public class PersonGenderTest
     public void testGenderSupportedResolver()
         throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        Method privateResolveGender = Person.Gender.class.getDeclaredMethod("resolveGender", String.class);
-        privateResolveGender.setAccessible(true);
+        Method privateGenderResolver = Person.Gender.class.getDeclaredMethod("resolveGender", String.class);
+        privateGenderResolver.setAccessible(true);
 
-        assertEquals(Person.Gender.WOMAN, privateResolveGender.invoke(null, "woman"));
+        assertEquals(Person.Gender.WOMAN, privateGenderResolver.invoke(null, "woman"));
     }
 
     @Test
