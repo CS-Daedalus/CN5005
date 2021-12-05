@@ -2,8 +2,10 @@ package com.gentree.common;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -82,6 +84,18 @@ public final class Util
      */
     public static String normalise(String s)
     {
-        return s.trim().toLowerCase();
+        return s.trim().toLowerCase(Locale.getDefault());
+    }
+
+    /**
+     * Find the first element in the list that matches the given value if it exists
+     * @param value The value to match
+     * @return The first element in the list that matches the given value if it exists
+     */
+    public static <T extends Enum<T>> Optional<T> getEnumByValue(Class<T> e, String value)
+    {
+        return Arrays.stream(e.getEnumConstants())
+                     .filter(v -> Util.normalise(v.name()).equals(Util.normalise(value)))
+                     .findFirst();
     }
 }
