@@ -3,7 +3,6 @@ package com.gentree.model;
 import com.gentree.common.Util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -18,19 +17,19 @@ public class Person
     private Person mother;
     private Person father;
 
-    public Person(String fullName, Gender gender, Person parent1, Person parent2)
+    public Person(String fullName, String gender, Person parent1, Person parent2)
     {
         this(fullName, gender, parent1);
         setParent(parent2);
     }
 
-    public Person(String fullName, Gender gender, Person parent)
+    public Person(String fullName, String gender, Person parent)
     {
         this(fullName, gender);
         setParent(parent);
     }
 
-    public Person(String fullName, Gender gender)
+    public Person(String fullName, String gender)
     {
         setFullName(fullName);
         setGender(gender);
@@ -43,7 +42,7 @@ public class Person
 
     public void setFullName(String fullName)
     {
-        this.fullName = fullName;
+        this.fullName = Util.capitalise(fullName);
     }
 
     public List<Person> getChildren()
@@ -62,9 +61,9 @@ public class Person
         return gender;
     }
 
-    public void setGender(Gender gender)
+    public void setGender(String gender)
     {
-        this.gender = gender;
+        this.gender = Gender.resolveGender(gender);
     }
 
     public Person getMother()
@@ -103,24 +102,8 @@ public class Person
 
     public enum Gender
     {
-        WOMAN("woman"),
-        MAN("man");
-
-        private final String value;
-
-        Gender(final String value)
-        {
-            this.value = Util.normalise(value);
-        }
-
-        /**
-         * The value of enum
-         * @return enum value
-         */
-        public String getValue()
-        {
-            return value;
-        }
+        WOMAN,
+        MAN;
 
         /**
          * Returns the list of supported genders
@@ -128,19 +111,20 @@ public class Person
          */
         public static List<String> getSupportedGenders()
         {
-            return Stream.of(Gender.values())
-                .map(Gender::getValue)
-                .collect(Collectors.toList());
+            return Stream.of(values())
+                         .map(Enum::name)
+                         .map(Util::normalise)
+                         .collect(Collectors.toList());
         }
 
         /**
          * Returns true if the gender is supported, false otherwise
          * @param gender String value of gender
-         * @return true when gender is support, false when not
+         * @return true when gender is supported, false when not
          */
-        public static boolean isValid(String gender)
+        public static boolean isSupported(String gender)
         {
-            return findFirstByValue(gender.toLowerCase(Locale.getDefault())).isPresent();
+            return getSupportedGenders().contains(Util.normalise(gender));
         }
 
         /**
@@ -151,7 +135,7 @@ public class Person
         private static Gender resolveGender(String gender)
         {
             // Resolve the gender string to Gender enum
-            Optional<Gender> g = findFirstByValue(Util.normalise(gender));
+            Optional<Gender> g = Util.getEnumByValue(Gender.class, Util.normalise(gender));
 
             // Check if the optional variable is present
             if (!g.isPresent())
@@ -163,25 +147,13 @@ public class Person
         }
 
         /**
-         * Find the first element in the list that matches the given value if it exists
-         * @param value The value to match
-         * @return The first element in the list that matches the given value if it exists
-         */
-        private static Optional<Gender> findFirstByValue(String value)
-        {
-            return Arrays.stream(values())
-                .filter(gender -> gender.value.equals(value))
-                .findFirst();
-        }
-
-        /**
          * Returns the string value of current enum
          * @return The value of current enum
          */
         @Override
         public String toString()
         {
-            return getValue();
+            return Util.normalise(name());
         }
     }
 }
