@@ -5,9 +5,12 @@ import com.gentree.model.Relation;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -44,16 +47,6 @@ public class RepositoriesService
         return localInstance;
     }
 
-    public PersonRepository getPersonRepository()
-    {
-        return personRepository;
-    }
-
-    public RelationRepository getRelationRepository()
-    {
-        return relationRepository;
-    }
-
     public void feed(@NotNull Deque<Person.Tuple> personTuples, @NotNull Deque<Relation.Tuple> relationTuples)
     {
         // First process the persons
@@ -75,16 +68,41 @@ public class RepositoriesService
         while (!relationTuples.isEmpty());
     }
 
+    public PersonRepository getPersonRepository()
+    {
+        return personRepository;
+    }
+
+    public RelationRepository getRelationRepository()
+    {
+        return relationRepository;
+    }
+
     /**
      * Person Repository
      */
-    private static class PersonRepository
+    public static class PersonRepository
     {
         private final Map<String, Person> store = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+
+        private PersonRepository()
+        {
+            // Prevent instantiation
+        }
 
         public void insert(Person.@NotNull Tuple entity)
         {
             store.put(entity.fullName, new Person(entity.fullName, entity.gender));
+        }
+
+        public int count()
+        {
+            return store.size();
+        }
+
+        public List<String> getPersonsName()
+        {
+            return new ArrayList<>(store.keySet());
         }
 
         public Person findOne(String key)
@@ -102,9 +120,14 @@ public class RepositoriesService
     /**
      * Relation Repository
      */
-    private class RelationRepository
+    public class RelationRepository
     {
         private final Set<Relation> store = new HashSet<>();
+
+        private RelationRepository()
+        {
+            // Prevent instantiation
+        }
 
         public void insert(Relation.@NotNull Tuple entity)
         {
@@ -113,6 +136,23 @@ public class RepositoriesService
                 RepositoriesService.this.personRepository.findOne(entity.person2FullName),
                 entity.bond
             ));
+        }
+
+        public int count()
+        {
+            return store.size();
+        }
+
+        public Optional<Relation> findOne(String person1FullName, String person2FullName)
+        {
+            Optional<Relation> result = Optional.empty();
+
+            for (Relation relation : store)
+                if (relation.getPerson1().getFullName().equals(person1FullName)
+                &&  relation.getPerson2().getFullName().equals(person2FullName))
+                    result = Optional.of(relation);
+
+            return result;
         }
 
         @Contract(pure = true)
