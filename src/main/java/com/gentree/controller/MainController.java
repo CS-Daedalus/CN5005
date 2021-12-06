@@ -1,6 +1,10 @@
 package com.gentree.controller;
 
 import com.gentree.common.Util;
+import com.gentree.model.Person;
+import com.gentree.model.Relation;
+import com.gentree.service.CsvService;
+import com.gentree.service.RepositoriesService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,11 +16,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Deque;
 import java.util.Objects;
 
 public class MainController
@@ -41,6 +48,17 @@ public class MainController
 
         if (selectedFile != null)
         {
+            try
+            {
+                ImmutablePair<Deque<Person.Tuple>, Deque<Relation.Tuple>> fileData =  CsvService
+                    .getInstance().readFile(selectedFile.getAbsolutePath());
+
+                RepositoriesService.getInstance().feed(fileData.getLeft(), fileData.getRight());
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
             System.out.println(selectedFile.getAbsolutePath());
         }
     }
