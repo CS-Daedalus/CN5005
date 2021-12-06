@@ -4,6 +4,7 @@ import com.gentree.common.Util;
 import com.gentree.model.Person;
 import com.gentree.model.Relation;
 import com.gentree.service.CsvService;
+import com.gentree.service.FamilyService;
 import com.gentree.service.RepositoriesService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -54,6 +55,8 @@ public class MainController
                     .getInstance().readFile(selectedFile.getAbsolutePath());
 
                 RepositoriesService.getInstance().feed(fileData.getLeft(), fileData.getRight());
+
+                FamilyService.getInstance().populateFamilyTree();
             }
             catch (IOException e)
             {

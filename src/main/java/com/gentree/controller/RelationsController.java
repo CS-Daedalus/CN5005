@@ -1,6 +1,8 @@
 package com.gentree.controller;
 
 
+import com.gentree.service.FamilyService;
+import com.gentree.service.RepositoriesService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -41,10 +43,7 @@ public class RelationsController
     @FXML
     public void initialize()
     {
-        peopleList.add("PersonA");
-        peopleList.add("PersonD");
-        peopleList.add("PersonC");
-        peopleList.add("PersonB");
+        peopleList.addAll(RepositoriesService.getInstance().getPersonRepository().getPersonsName());
 
         observableListA.setAll(peopleList);
         observableListB.setAll(peopleList);
@@ -78,6 +77,8 @@ public class RelationsController
                 "You have selected the following names: %s and %s",
                 getSelection(listViewA),
                 getSelection(listViewB)));
+
+        FamilyService.getInstance().findBond(getSelection(listViewA), getSelection(listViewB));
     }
 
     private String getSelection(@NotNull ListView<String> list)
