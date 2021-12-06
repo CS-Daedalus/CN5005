@@ -1,6 +1,7 @@
 package com.gentree.controller;
 
 import com.gentree.common.Util;
+import com.gentree.service.RepositoriesService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class PeopleController
 {
-    private final List<String> NameList = new ArrayList<>();
+    private final List<String> NameList= new ArrayList<>();
 
     private final ObservableList<String> finalNameList = FXCollections.observableArrayList();
 
@@ -26,10 +27,7 @@ public class PeopleController
 
     public void initialize()
     {
-        NameList.add("PersonA");
-        NameList.add("PersonB");
-        NameList.add("PersonC");
-        NameList.add("PersonD");
+        NameList.addAll(RepositoriesService.getInstance().getPersonRepository().getPersonsName());
 
         finalNameList.setAll(NameList);
         NamesList.setItems(finalNameList);
