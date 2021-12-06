@@ -3,8 +3,10 @@ package com.gentree.model;
 import com.gentree.common.Util;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -90,16 +92,27 @@ public class Relation
 
     public enum Bond
     {
-        MOTHER,
-        FATHER,
-        //SISTER,
-        //BROTHER,
-        //DAUGHTER,
-        //WIFE,
-        HUSBAND;
-        //SIBLING,
-        //PARENT,
-        //CHILD,
+        //TODO: Add proper enum values
+
+        PARENT(1),
+        MOTHER(PARENT.value + + Person.Gender.WOMAN.getValue()),
+        FATHER(PARENT.value + + Person.Gender.MAN.getValue()),
+
+        CHILD(PARENT.value + 1),
+        DAUGHTER(CHILD.value + Person.Gender.WOMAN.getValue()),
+        SON(CHILD.value + Person.Gender.MAN.getValue()),
+
+        SIBLING(PARENT.value + CHILD.value),
+        SISTER(SIBLING.value + Person.Gender.WOMAN.getValue()),
+        BROTHER(SIBLING.value + Person.Gender.MAN.getValue()),
+
+        SPOUSE(4),
+        WIFE(SPOUSE.value + Person.Gender.WOMAN.getValue()),
+        HUSBAND(SPOUSE.value + Person.Gender.MAN.getValue());
+
+
+
+
         //UNCLE,
         //AUNT,
         //COUSIN,
@@ -115,7 +128,6 @@ public class Relation
         //GRANDCOUSIN,
         //NEPHEW,
         //NIECE,
-        //SON,
         //DAUGHTER_IN_LAW,
         //HUSBAND_IN_LAW,
         //GRANDSON,
@@ -123,15 +135,29 @@ public class Relation
         //GRANDHUSBAND_IN_LAW,
         //NONE;
 
+        private final double value;
+
+        Bond(final double value)
+        {
+            this.value = value;
+        }
+
         /**
-         * Returns the list of supported bonds
+         * Returns the value of current enum
+         * @return The value of current enum
+         */
+        public double getValue()
+        {
+            return value;
+        }
+
+        /**
+         * Returns the list of user-defined supported bonds
          * @return the list of supported bonds
          */
-        public static List<String> getSupportedBonds()
+        public static @NotNull List<String> getSupportedBonds()
         {
-            return Stream.of(values())
-                         .map(Enum::name)
-                         .collect(Collectors.toList());
+            return Arrays.asList(MOTHER.name(), FATHER.name(), HUSBAND.name());
         }
 
         /**
@@ -142,6 +168,33 @@ public class Relation
         public static boolean isSupported(String bond)
         {
             return getSupportedBonds().contains(Util.normaliseUpper(bond));
+        }
+
+        /**
+         * Returns the bond that corresponds to the given value
+         * @param value The value of the bond
+         * @return The bond that corresponds to the given value
+         */
+        public static @NotNull Bond getBondByValue(double value)
+        {
+            Optional<Bond> b = Arrays.stream(Bond.values()).filter(bond -> bond.getValue() == value).findFirst();
+
+            if (b.isPresent())
+                return b.get();
+
+            throw new IllegalArgumentException(
+                String.format(
+                    "Bond with value %s is not supported", value));
+        }
+
+        /**
+         * Returns the string value of current enum
+         * @return The value of current enum
+         */
+        @Override
+        public @NotNull String toString()
+        {
+            return Util.normaliseLower(name());
         }
 
         /**
@@ -162,16 +215,6 @@ public class Relation
                     String.format(
                         Locale.getDefault(), "Bond '%s' is not supported by the system.", bond));
             }
-        }
-
-        /**
-         * Returns the string value of current enum
-         * @return The value of current enum
-         */
-        @Override
-        public @NotNull String toString()
-        {
-            return Util.normaliseLower(name());
         }
     }
 }

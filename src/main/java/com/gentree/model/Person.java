@@ -1,6 +1,7 @@
 package com.gentree.model;
 
 import com.gentree.common.Util;
+import com.sun.tools.javah.Gen;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Person
+public class Person implements Comparable<Person>
 {
     private String fullName;
     private final List<Person> children = new ArrayList<>();
@@ -154,6 +155,22 @@ public class Person
     }
 
     /**
+     * Compares this person to another person
+     * @param other the other person to compare to
+     * @return the result of the comparison
+     */
+    @Override
+    public int compareTo(@NotNull final Person other)
+    {
+        // We require comparing not only by value, but by reference too.
+        // This is to prevent comparing two persons with same value, but different references
+        if (this == other)
+            return 0;
+
+        return -1;
+    }
+
+    /**
      * Tuple of Person object
      */
     public static class Tuple
@@ -164,8 +181,24 @@ public class Person
 
     public enum Gender
     {
-        WOMAN,
-        MAN;
+        WOMAN(0),
+        MAN(1);
+
+        private final double value;
+
+        Gender(final double value)
+        {
+            this.value = value;
+        }
+
+        /**
+         * Returns the value of current enum
+         * @return The value of current enum
+         */
+        public double getValue()
+        {
+            return value;
+        }
 
         /**
          * Returns the list of supported genders
