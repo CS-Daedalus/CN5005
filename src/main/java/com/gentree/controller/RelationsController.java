@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,11 +16,17 @@ import java.util.Objects;
 public class RelationsController
 {
 
-    @FXML
-    private ListView listViewA;
+    private final List<String> peopleList = new ArrayList<>();
+
+    private final ObservableList<String> observableListA = FXCollections.observableArrayList();
+
+    private final ObservableList<String> observableListB = FXCollections.observableArrayList();
 
     @FXML
-    private ListView listViewB;
+    private ListView<String> listViewA;
+
+    @FXML
+    private ListView<String> listViewB;
 
     @FXML
     private Label outputLabel;
@@ -26,23 +34,17 @@ public class RelationsController
     @FXML
     private Button confirmButton;
 
-    private final List<String> peopleList = new ArrayList<>();
-
-    private final ObservableList<String> observableListA = FXCollections.observableArrayList();
-    private final ObservableList<String> observableListB = FXCollections.observableArrayList();
-
     private boolean SelectA = false;
+
     private boolean SelectB = false;
 
     @FXML
-    public void initialize() {
-
-
+    public void initialize()
+    {
         peopleList.add("PersonA");
         peopleList.add("PersonD");
         peopleList.add("PersonC");
         peopleList.add("PersonB");
-
 
         observableListA.setAll(peopleList);
         observableListB.setAll(peopleList);
@@ -51,24 +53,35 @@ public class RelationsController
         listViewB.setItems(observableListB);
     }
 
-    public void checkSelectionA () {
-
+    public void checkSelectionA()
+    {
         SelectA = (!Objects.equals(getSelection(listViewA), "[]"));
         unlockButton();
     }
 
-    public void checkSelectionB () {
+    public void checkSelectionB()
+    {
 
         SelectB = (!Objects.equals(getSelection(listViewB), "[]"));
         unlockButton();
     }
 
-    private void unlockButton () { confirmButton.setDisable(!(SelectA && SelectB)); }
+    private void unlockButton()
+    {
+        confirmButton.setDisable(!(SelectA && SelectB));
+    }
 
-    public void findRelation() { outputLabel.setText(
-        String.format("You have selected the following names: %s and %s",
-                      getSelection(listViewA),
-                      getSelection(listViewB))); }
+    public void findRelation()
+    {
+        outputLabel.setText(
+            String.format(
+                "You have selected the following names: %s and %s",
+                getSelection(listViewA),
+                getSelection(listViewB)));
+    }
 
-    private String getSelection (ListView list) { return String.valueOf(list.getSelectionModel().getSelectedItems()); }
+    private String getSelection(@NotNull ListView<String> list)
+    {
+        return String.valueOf(list.getSelectionModel().getSelectedItems());
+    }
 }

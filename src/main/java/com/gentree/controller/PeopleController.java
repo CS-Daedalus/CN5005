@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -15,15 +17,15 @@ import java.util.List;
 
 public class PeopleController
 {
-    @FXML
-    private ListView NamesList;
-
     private final List<String> NameList = new ArrayList<>();
+
     private final ObservableList<String> finalNameList = FXCollections.observableArrayList();
 
-    public void initialize() {
+    @FXML
+    private ListView<String> NamesList;
 
-
+    public void initialize()
+    {
         NameList.add("PersonA");
         NameList.add("PersonB");
         NameList.add("PersonC");
@@ -34,7 +36,8 @@ public class PeopleController
     }
 
     @FXML
-    protected void saveSortedPeople() {
+    protected void saveSortedPeople()
+    {
 
         System.out.println("Saving the txt file with the sorted people...");
 
@@ -46,7 +49,8 @@ public class PeopleController
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Text Document", "*.txt"));
         File file = fileChooser.showSaveDialog(new Stage());
-        if(file != null)
+
+        if (file != null)
         {
             saveSystem(file, NameList);
             System.out.println("Text document successfully created!");
@@ -57,23 +61,24 @@ public class PeopleController
         {
             System.out.println("Aborted");
         }
-
     }
 
-    private void saveSystem(File file, List<String> nList )
+    private void saveSystem(File file, @NotNull List<String> nList)
     {
         try
         {
             PrintWriter printWriter = new PrintWriter(file);
-            for (int i = 0; i < nList.size(); i++ ){
-                printWriter.println(nList.get(i));
+
+            for (String s : nList)
+            {
+                printWriter.println(s);
             }
+
             printWriter.close();
         }
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
         }
-
     }
 }

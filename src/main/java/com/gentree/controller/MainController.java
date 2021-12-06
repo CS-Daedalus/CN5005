@@ -12,6 +12,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.commons.io.FilenameUtils;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -33,11 +35,9 @@ public class MainController
     {
         System.out.println("Importing csv...");
         FileChooser fc = new FileChooser();
-        File selectedFile;
-        fc.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-        selectedFile = fc.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
-
+        File        selectedFile;
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        selectedFile = fc.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
         if (selectedFile != null)
         {
@@ -51,15 +51,14 @@ public class MainController
     {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(
-            Objects.requireNonNull(
-                Thread.currentThread().getContextClassLoader()
-                      .getResource("view/people.fxml")));
+            Objects.requireNonNull(Thread.currentThread()
+                                         .getContextClassLoader()
+                                         .getResource("view/people.fxml")));
         stage.setScene(new Scene(root));
         stage.setTitle("testing");
         stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(
-            ((Node)event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.show();
     }
 
@@ -69,35 +68,35 @@ public class MainController
     {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(
-            Objects.requireNonNull(
-                Thread.currentThread().getContextClassLoader()
-                      .getResource("view/relations.fxml")));
+            Objects.requireNonNull(Thread.currentThread()
+                                         .getContextClassLoader()
+                                         .getResource("view/relations.fxml")));
         stage.setScene(new Scene(root));
         stage.setTitle("testing");
         stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(
-            ((Node)event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.show();
     }
 
     @FXML
-    protected void exportToDot(ActionEvent event)
+    protected void exportToDot(@NotNull ActionEvent event)
     {
         System.out.println("Exporting DOT...");
 
         FileChooser fileChooser = new FileChooser();
-        String smaple = "contents of the dot file";
+        String      sample      = "contents of the dot file";
 
         System.out.println("The button openExportDot was activated");
         fileChooser.setInitialDirectory(new File(Util.USER_HOME_DIR));
         fileChooser.setInitialFileName("Dot_file");
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Dot Files", "*.dot"));
-        File file = fileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
-        if(file != null)
+        File file = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
+
+        if (file != null)
         {
-            saveSystem(file, smaple);
+            saveSystem(file, sample);
             System.out.println("Dot file created!");
             System.out.println("Dot filename: " + file.getName());
             System.out.println("Dot absolutePath: " + file.getAbsolutePath());
@@ -109,12 +108,11 @@ public class MainController
     }
 
     @FXML
-    protected void exportToImage(ActionEvent event)
+    protected void exportToImage(@NotNull ActionEvent event)
     {
         System.out.println("Exporting image...");
 
         FileChooser fileChooser = new FileChooser();
-
 
         System.out.println("The button openExportDot was activated");
         fileChooser.setInitialDirectory(new File(Util.USER_HOME_DIR));
@@ -123,17 +121,17 @@ public class MainController
             new FileChooser.ExtensionFilter("Image Files", "*.jpg"),
             new FileChooser.ExtensionFilter("Image Files", "*.png"),
             new FileChooser.ExtensionFilter("Image Files", "*.svg"));
-        File file = fileChooser.showSaveDialog(((Node)event.getSource()).getScene().getWindow());
-        if(file != null)
+        File file = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
+        if (file != null)
         {
             System.out.println("Image file created!");
             System.out.println("Image filename: " + FilenameUtils.getBaseName(file.getName()));
-            System.out.println("Image fileExtention: " + FilenameUtils.getExtension(file.getName()));
-            System.out.println("Image absolutePath: " + file.getAbsolutePath());
+            System.out.println("Image file extension: " + FilenameUtils.getExtension(file.getName()));
+            System.out.println("Image absolute path: " + file.getAbsolutePath());
         }
         else
         {
-            System.out.println("Aborded");
+            System.out.println("Aborted");
         }
     }
 
@@ -149,8 +147,5 @@ public class MainController
         {
             e.printStackTrace();
         }
-
     }
-
-
 }
