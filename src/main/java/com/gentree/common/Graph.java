@@ -1,5 +1,6 @@
 package com.gentree.common;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,12 +17,12 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 
-public class Graph<V extends Comparable<V>>
+public class Graph<K, V extends Comparable<V>>
 {
     private final boolean isDirected;
-    private final Set<Vertex<V>> vertices;
+    private final Map<K, Vertex<V>> vertices;
     private final Set<Edge> edges;
-    private IVertex<V> root;
+    private IVertex<K, V> root;
 
     /**
      * Default Constructor that creates a directed graph
@@ -39,7 +40,7 @@ public class Graph<V extends Comparable<V>>
     public Graph(boolean isDirected)
     {
         this.isDirected = isDirected;
-        vertices = new HashSet<>();
+        vertices = new HashMap<>();
         edges = new HashSet<>();
     }
 
@@ -51,12 +52,12 @@ public class Graph<V extends Comparable<V>>
      * @param payload Value of type T
      * @return Vertex
      */
-    public Vertex<V> insertVertex(V payload)
+    public Vertex<V> insertVertex(K key, V payload)
     {
-        Vertex<V> v = new Vertex<>(payload, isDirected);
+        Vertex<V> v = new Vertex<>(key, payload, isDirected);
         if (null == root)
             root = v;
-        vertices.add(v);
+        vertices.put(key, v);
         return v;
     }
 
@@ -65,7 +66,7 @@ public class Graph<V extends Comparable<V>>
      *
      * @param vertex Vertex
      */
-    public void removeVertex(IVertex<V> vertex)
+    public void removeVertex(IVertex<K, V> vertex)
     {
         Vertex<V> v = validate(vertex);
         for (IEdge edge : v.outgoing.values())
@@ -74,7 +75,7 @@ public class Graph<V extends Comparable<V>>
         for (IEdge edge : v.incoming.values())
             removeEdge(edge);
 
-        vertices.remove(v);
+        vertices.remove(v.getKey());
     }
 
     /**
@@ -86,7 +87,7 @@ public class Graph<V extends Comparable<V>>
     {
         Edge e = validate(edge);
 
-        List<IVertex<V>> endpoints = e.getEndpoints();
+        List<IVertex<K, V>> endpoints = e.getEndpoints();
 
         // Remove vertices at edge endpoints from their incoming/outgoing lists
         Vertex<V> source = validate(endpoints.get(0));
@@ -106,7 +107,7 @@ public class Graph<V extends Comparable<V>>
      * @return Edge
      * @throws IllegalArgumentException if edge already exists
      */
-    public IEdge insertEdge(IVertex<V> source, IVertex<V> destination, double weight)
+    public IEdge insertEdge(IVertex<K, V> source, IVertex<K, V> destination, double weight)
         throws IllegalArgumentException
     {
         if (null == getEdge(source, destination))
@@ -132,7 +133,8 @@ public class Graph<V extends Comparable<V>>
      *
      * @return number of vertices in graph
      */
-    public int numVertices() {
+    public int numVertices()
+    {
         return vertices.size();
     }
 
@@ -141,8 +143,19 @@ public class Graph<V extends Comparable<V>>
      *
      * @return number of edges in graph
      */
-    public int numEdges() {
+    public int numEdges()
+    {
         return edges.size();
+    }
+
+    /**
+     * Return the Vertex with the given key.
+     * @param key Key
+     * @return Vertex
+     */
+    public IVertex<K, V> getVertex(K key)
+    {
+        return vertices.get(key);
     }
 
     /**
@@ -150,8 +163,9 @@ public class Graph<V extends Comparable<V>>
      *
      * @return all vertices in graph
      */
-    public Iterable<Vertex<V>> vertices() {
-        return new HashSet<>(vertices);
+    public Iterable<Vertex<V>> vertices()
+    {
+        return new HashSet<>(vertices.values());
     }
 
     /**
@@ -159,7 +173,8 @@ public class Graph<V extends Comparable<V>>
      *
      * @return all edges in graph
      */
-    public Iterable<Edge> edges() {
+    public Iterable<Edge> edges()
+    {
         return new HashSet<>(edges);
     }
 
@@ -172,7 +187,7 @@ public class Graph<V extends Comparable<V>>
      * @param destination   value of type V for vertex 'destination'
      * @return ArrayList of type String of the steps in the shortest path.
      */
-    public List<String> getPath(V source, V destination)
+    public List<ImmutablePair<V, Double>> getPath(V source, V destination)
     {
         boolean test = dijkstra(source);
         if (!test)
@@ -214,14 +229,14 @@ public class Graph<V extends Comparable<V>>
         if (root == null)
             return false;
 
-        Queue<IVertex<V>> queue = new LinkedList<>();
+        Queue<IVertex<K, V>> queue = new LinkedList<>();
         queue.add(root);
         root.setVisitState(VisitState.VISITED);
 
         while (!queue.isEmpty())
         {
-            IVertex<V> vSubRoot = queue.peek();
-            for (IVertex<V> vertex : vSubRoot.getOutgoing().keySet())
+            IVertex<K, V> vSubRoot = queue.peek();
+            for (IVertex<K, V> vertex : vSubRoot.getOutgoing().keySet())
             {
 
                 if (vertex.getVisitState() == VisitState.UNVISITED)
@@ -247,18 +262,18 @@ public class Graph<V extends Comparable<V>>
             return false;
         clearStates();
 
-        IVertex<V> vRoot = getVertex(startVertex);
+        IVertex<K, V> vRoot = getVertex(startVertex);
         if (vRoot == null)
             return false;
 
-        Queue<IVertex<V>> queue = new LinkedList<>();
+        Queue<IVertex<K, V>> queue = new LinkedList<>();
         queue.add(vRoot);
         vRoot.setVisitState(VisitState.VISITED);
 
         while (!queue.isEmpty())
         {
             vRoot = queue.peek();
-            for (IVertex<V> vertex : vRoot.getOutgoing().keySet())
+            for (IVertex<K, V> vertex : vRoot.getOutgoing().keySet())
             {
 
                 if (vertex.getVisitState() == VisitState.UNVISITED)
@@ -278,7 +293,7 @@ public class Graph<V extends Comparable<V>>
      */
     public boolean isConnected()
     {
-        for (Vertex<V> vertex : vertices)
+        for (Vertex<V> vertex : vertices.values())
         {
             if (vertex.visitState != VisitState.VISITED)
                 return false;
@@ -311,7 +326,7 @@ public class Graph<V extends Comparable<V>>
     {
         StringBuilder sb = new StringBuilder();
 
-        for (IVertex<V> v : vertices)
+        for (IVertex<K, V> v : vertices.values())
         {
             sb.append("Vertex ").append(v.getPayload()).append("\n");
             if (isDirected)
@@ -359,7 +374,7 @@ public class Graph<V extends Comparable<V>>
      * @return Vertex
      */
     @Contract(value = "null -> fail", pure = true)
-    private @NotNull Vertex<V> validate(IVertex<V> vertex)
+    private @NotNull Vertex<V> validate(IVertex<K, V> vertex)
     {
         if (!(vertex instanceof Vertex)) {
             throw new IllegalArgumentException("Invalid vertex");
@@ -385,7 +400,7 @@ public class Graph<V extends Comparable<V>>
     @Contract(pure = true)
     private @Nullable Vertex<V> getVertex(V vertex)
     {
-        for (Vertex<V> v : vertices)
+        for (Vertex<V> v : vertices.values())
         {
             if (v.payload.compareTo(vertex) == 0)
                 return v;
@@ -399,7 +414,7 @@ public class Graph<V extends Comparable<V>>
      * @param destination Vertex 'destination'
      * @return Edge, or <code>null</code> if not found.
      */
-    private IEdge getEdge(IVertex<V> source, IVertex<V> destination)
+    private IEdge getEdge(IVertex<K, V> source, IVertex<K, V> destination)
     {
         Vertex<V> from = validate(source);
         return from.getOutgoing().get(destination);
@@ -411,10 +426,10 @@ public class Graph<V extends Comparable<V>>
      * @param edge Edge
      * @return Vertex
      */
-    private IVertex<V> opposite(IVertex<V> vertex, IEdge edge)
+    private IVertex<K, V> opposite(IVertex<K, V> vertex, IEdge edge)
     {
         Edge e = validate(edge);
-        List<IVertex<V>> endpoints = e.getEndpoints();
+        List<IVertex<K, V>> endpoints = e.getEndpoints();
 
         if (endpoints.get(0).equals(vertex))
         {
@@ -433,7 +448,7 @@ public class Graph<V extends Comparable<V>>
      * @param vertex Vertex
      * @return int
      */
-    private int inDegree(IVertex<V> vertex)
+    private int inDegree(IVertex<K, V> vertex)
     {
         return validate(vertex).getIncoming().size();
     }
@@ -444,7 +459,7 @@ public class Graph<V extends Comparable<V>>
      * @param vertex Vertex
      * @return int
      */
-    private int outDegree(IVertex<V> vertex)
+    private int outDegree(IVertex<K, V> vertex)
     {
         return validate(vertex).getOutgoing().size();
     }
@@ -455,7 +470,7 @@ public class Graph<V extends Comparable<V>>
      * @param vertex Vertex
      * @return Iterable set of Edge objects
      */
-    private @NotNull Iterable<IEdge> inEdges(IVertex<V> vertex)
+    private @NotNull Iterable<IEdge> inEdges(IVertex<K, V> vertex)
     {
         return validate(vertex).getIncoming().values();
     }
@@ -466,7 +481,7 @@ public class Graph<V extends Comparable<V>>
      * @param vertex Vertex
      * @return Iterable set of Edge objects
      */
-    private @NotNull Iterable<IEdge> outEdge(IVertex<V> vertex)
+    private @NotNull Iterable<IEdge> outEdge(IVertex<K, V> vertex)
     {
         return validate(vertex).getOutgoing().values();
     }
@@ -477,7 +492,7 @@ public class Graph<V extends Comparable<V>>
      */
     private void clearStates()
     {
-        for (Vertex<V> vertex : vertices)
+        for (Vertex<V> vertex : vertices.values())
         {
             vertex.visitState = VisitState.UNVISITED;
         }
@@ -488,12 +503,12 @@ public class Graph<V extends Comparable<V>>
      *
      * @param vertex vertex
      */
-    private void depthFirstSearch(@NotNull IVertex<V> vertex)
+    private void depthFirstSearch(@NotNull IVertex<K, V> vertex)
     {
         vertex.setVisitState(VisitState.VISITING);
 
         // loop through neighbors
-        for (IVertex<V> v : vertex.getOutgoing().keySet())
+        for (IVertex<K, V> v : vertex.getOutgoing().keySet())
         {
             if (v.getVisitState() == VisitState.UNVISITED)
             {
@@ -527,16 +542,16 @@ public class Graph<V extends Comparable<V>>
 
         // set to 0 and add to heap
         source.minDistance = 0;
-        PriorityQueue<IVertex<V>> priorityQueue = new PriorityQueue<>();
+        PriorityQueue<IVertex<K, V>> priorityQueue = new PriorityQueue<>();
         priorityQueue.add(source);
 
         while (!priorityQueue.isEmpty())
         {
             //pull off top of queue
-            IVertex<V> u = priorityQueue.poll();
+            IVertex<K, V> u = priorityQueue.poll();
 
             // loop through adjacent vertices
-            for (IVertex<V> v : u.getOutgoing().keySet())
+            for (IVertex<K, V> v : u.getOutgoing().keySet())
             {
                 // get edge
                 Edge e = validate(getEdge(validate(u), validate(v)));
@@ -563,21 +578,22 @@ public class Graph<V extends Comparable<V>>
      * @param target Vertex end of path
      * @return string List of vertices and weights
      */
-    private @NotNull List<String> getShortestPath(@NotNull Vertex<V> target)
+    private @NotNull List<ImmutablePair<V, Double>> getShortestPath(@NotNull Vertex<V> target)
     {
-        List<String> path = new ArrayList<>();
+        List<ImmutablePair<V, Double>> path = new ArrayList<>();
 
         // check for no path found
         if (Math.abs(target.minDistance - Integer.MAX_VALUE) < Float.MIN_VALUE)
         {
-            path.add("No path found");
+            //path.add("No path found");
             return path;
         }
 
         // loop through the vertices from end target
         for (Vertex<V> v = target; v != null; v = v.previous)
         {
-            path.add(v.payload + " : weight : " + v.minDistance);
+            //path.add(v.payload + " : weight : " + v.minDistance);
+            path.add(new ImmutablePair<>(v.payload, v.minDistance));
         }
 
         // flip the list
@@ -590,7 +606,7 @@ public class Graph<V extends Comparable<V>>
      */
     private void resetDistances()
     {
-        for (Vertex<V> vertex : vertices)
+        for (Vertex<V> vertex : vertices.values())
         {
             vertex.minDistance = Integer.MAX_VALUE;
             vertex.previous = null;
@@ -608,15 +624,16 @@ public class Graph<V extends Comparable<V>>
 
     class Vertex<V>
         implements Comparable<Vertex<V>>,
-                   IVertex<V>
+                   IVertex<K, V>
     {
+        private final K key;
         private final V payload;
 
         // variables for Dijkstra Tree
         private Vertex<V> previous;
         private double minDistance = Integer.MAX_VALUE;
-        private final Map<IVertex<V>, IEdge> outgoing;
-        private Map<IVertex<V>, IEdge> incoming;
+        private final Map<IVertex<K, V>, IEdge> outgoing;
+        private Map<IVertex<K, V>, IEdge> incoming;
         private VisitState visitState;
         private final boolean isDirected;
 
@@ -624,8 +641,9 @@ public class Graph<V extends Comparable<V>>
          * Creates new Vertex with value T
          * @param payload T
          */
-        public Vertex(V payload, boolean isDirected)
+        public Vertex(K key, V payload, boolean isDirected)
         {
+            this.key = key;
             this.payload = payload;
             this.isDirected = isDirected;
             visitState = VisitState.UNVISITED;
@@ -634,7 +652,13 @@ public class Graph<V extends Comparable<V>>
                 // if directed, add incoming edges
                 incoming = new HashMap<>();
         }
-
+        
+        @Override
+        public K getKey()
+        {
+            return key;
+        }
+        
         @Override
         public V getPayload()
         {
@@ -645,7 +669,7 @@ public class Graph<V extends Comparable<V>>
          * @return list of incoming adjacent vertices
          * @throws IllegalArgumentException if not directed
          */
-        public Map<IVertex<V>, IEdge> getIncoming()
+        public Map<IVertex<K, V>, IEdge> getIncoming()
             throws IllegalArgumentException
         {
             if (isDirected)
@@ -657,7 +681,7 @@ public class Graph<V extends Comparable<V>>
         /**
          * @return list of outgoing adjacent vertices
          */
-        public Map<IVertex<V>, IEdge> getOutgoing()
+        public Map<IVertex<K, V>, IEdge> getOutgoing()
         {
             return outgoing;
         }
@@ -684,7 +708,7 @@ public class Graph<V extends Comparable<V>>
          * Returns the previous vertex in the shortest path
          * @return previous vertex in the shortest path
          */
-        public IVertex<V> getPrevious()
+        public IVertex<K, V> getPrevious()
         {
             return previous;
         }
@@ -693,7 +717,7 @@ public class Graph<V extends Comparable<V>>
          * Sets the previous vertex in the shortest path
          * @param previous previous vertex in the shortest path
          */
-        public void setPrevious(IVertex<V> previous)
+        public void setPrevious(IVertex<K, V> previous)
         {
             this.previous = (Vertex<V>) previous;
         }
@@ -759,10 +783,10 @@ public class Graph<V extends Comparable<V>>
         {
             StringBuilder sb = new StringBuilder();
             sb.append("Vertex: ").append(payload).append(" : In: ");
-            for (IVertex<V> incomingVertex : getIncoming().keySet())
+            for (IVertex<K, V> incomingVertex : getIncoming().keySet())
                 sb.append(incomingVertex.getPayload()).append(" ");
             sb.append("Out: ");
-            for (IVertex<V> outgoingVertex : getOutgoing().keySet())
+            for (IVertex<K, V> outgoingVertex : getOutgoing().keySet())
                 sb.append(outgoingVertex.getPayload()).append(" ");
 
             return sb.toString();
@@ -772,7 +796,7 @@ public class Graph<V extends Comparable<V>>
     class Edge implements IEdge
     {
         private final double weight;
-        private final List<IVertex<V>> endpoints = new ArrayList<>();
+        private final List<IVertex<K, V>> endpoints = new ArrayList<>();
 
         /**
          * @param source     value of type V for 'source' vertex
@@ -795,17 +819,17 @@ public class Graph<V extends Comparable<V>>
             return "Edge From: " + getSource().getPayload() + " to: " + getSource().getPayload() + " weight: " + weight;
         }
 
-        public List<IVertex<V>> getEndpoints()
+        public List<IVertex<K, V>> getEndpoints()
         {
             return endpoints;
         }
 
-        public IVertex<V> getSource()
+        public IVertex<K, V> getSource()
         {
             return endpoints.get(0);
         }
 
-        public IVertex<V> getDestination()
+        public IVertex<K, V> getDestination()
         {
             return endpoints.get(1);
         }
