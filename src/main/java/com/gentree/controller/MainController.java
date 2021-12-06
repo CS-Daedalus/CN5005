@@ -31,7 +31,7 @@ public class MainController
     }
 
     @FXML
-    protected void importCsv(ActionEvent event)
+    protected void importCsv(@NotNull ActionEvent event)
     {
         System.out.println("Importing csv...");
         FileChooser fc = new FileChooser();
@@ -46,7 +46,7 @@ public class MainController
     }
 
     @FXML
-    protected void sortPersons(ActionEvent event)
+    protected void sortPersons(@NotNull ActionEvent event)
         throws Exception
     {
         Stage stage = new Stage();
@@ -63,7 +63,7 @@ public class MainController
     }
 
     @FXML
-    protected void findRelations(ActionEvent event)
+    protected void findRelations(@NotNull ActionEvent event)
         throws Exception
     {
         Stage stage = new Stage();
