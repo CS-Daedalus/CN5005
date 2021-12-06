@@ -82,6 +82,6 @@ public class RelationsController
 
     private String getSelection(@NotNull ListView<String> list)
     {
-        return String.valueOf(list.getSelectionModel().getSelectedItems());
+        return list.getSelectionModel().getSelectedItems().get(0);
     }
 }
