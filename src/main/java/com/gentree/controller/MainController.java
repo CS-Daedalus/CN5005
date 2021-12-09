@@ -195,21 +195,11 @@ public class MainController
 
     private void unlockButtons()
     {
-        if (state == true)
-        {
-            sortButton.setDisable(false);
-            findButton.setDisable(false);
-            exportDotButton.setDisable(false);
-            exportImageButton.setDisable(false);
-            state = false;
-        }
-        else
-        {
-            sortButton.setDisable(true);
-            findButton.setDisable(true);
-            exportDotButton.setDisable(true);
-            exportImageButton.setDisable(true);
-        }
+        sortButton.setDisable(!state);
+        findButton.setDisable(!state);
+        exportDotButton.setDisable(!state);
+        exportImageButton.setDisable(!state);
+        state = false;
 
     }
 
