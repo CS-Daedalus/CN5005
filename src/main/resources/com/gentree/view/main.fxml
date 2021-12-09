@@ -19,8 +19,8 @@
     <Label fx:id="welcomeText" />
 
     <Button onAction="#importCsv" text="Import CSV" />
-    <Button onAction="#sortPersons" text="Sort people" />
-    <Button onAction="#findRelations" text="Find relations" />
-    <Button onAction="#exportToDot" text="Export to .dot" />
-    <Button onAction="#exportToImage" text="Export to image" />
+    <Button fx:id="sortButton" onAction="#sortPersons" text="Sort people" disable="true"/>
+    <Button fx:id="findButton" onAction="#findRelations" text="Find relations" disable="true"/>
+    <Button fx:id="exportDotButton" onAction="#exportToDot" text="Export to .dot" disable="true"/>
+    <Button fx:id="exportImageButton" onAction="#exportToImage" text="Export to image" disable="true"/>
 </VBox>

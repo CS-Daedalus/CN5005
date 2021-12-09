@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -29,8 +30,23 @@ import java.util.Objects;
 
 public class MainController
 {
+
     @FXML
     private Label welcomeText;
+
+    @FXML
+    private Button sortButton;
+
+    @FXML
+    private Button findButton;
+
+    @FXML
+    private Button exportDotButton;
+
+    @FXML
+    private Button exportImageButton;
+
+    private boolean state = false;
 
     @FXML
     public void initialize()
@@ -41,6 +57,8 @@ public class MainController
     @FXML
     protected void importCsv(@NotNull ActionEvent event)
     {
+        unlockButtons();
+        state = false;
         System.out.println("Importing csv...");
         FileChooser fc = new FileChooser();
         File        selectedFile;
@@ -57,11 +75,16 @@ public class MainController
                 RepositoriesService.getInstance().feed(fileData.getLeft(), fileData.getRight());
 
                 FamilyService.getInstance().populateFamilyTree();
+                state = true;
+                unlockButtons();
+
             }
             catch (IOException e)
             {
                 e.printStackTrace();
             }
+
+
             System.out.println(selectedFile.getAbsolutePath());
         }
     }
@@ -169,4 +192,25 @@ public class MainController
             e.printStackTrace();
         }
     }
+
+    private void unlockButtons()
+    {
+        if (state == true)
+        {
+            sortButton.setDisable(false);
+            findButton.setDisable(false);
+            exportDotButton.setDisable(false);
+            exportImageButton.setDisable(false);
+            state = false;
+        }
+        else
+        {
+            sortButton.setDisable(true);
+            findButton.setDisable(true);
+            exportDotButton.setDisable(true);
+            exportImageButton.setDisable(true);
+        }
+
+    }
+
 }
