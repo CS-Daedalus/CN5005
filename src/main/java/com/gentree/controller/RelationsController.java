@@ -1,6 +1,5 @@
 package com.gentree.controller;
 
-
 import com.gentree.service.FamilyService;
 import com.gentree.service.RepositoriesService;
 import javafx.collections.FXCollections;
@@ -19,49 +18,42 @@ public class RelationsController
 {
 
     private final List<String> peopleList = new ArrayList<>();
-
     private final ObservableList<String> observableListA = FXCollections.observableArrayList();
-
     private final ObservableList<String> observableListB = FXCollections.observableArrayList();
 
-    @FXML
-    private ListView<String> listViewA;
-
-    @FXML
-    private ListView<String> listViewB;
-
-    @FXML
-    private Label outputLabel;
-
-    @FXML
-    private Button confirmButton;
+    @FXML private ListView<String> listViewA;
+    @FXML private ListView<String> listViewB;
+    @FXML private Label outputLabel;
+    @FXML private Button confirmButton;
 
     private boolean SelectA = false;
-
     private boolean SelectB = false;
 
     @FXML
-    public void initialize()
+    public void init()
     {
-        peopleList.addAll(RepositoriesService.getInstance().getPersonRepository().getPersonsName());
+        if (peopleList.isEmpty())
+        {
+            peopleList.addAll(RepositoriesService.getInstance().getPersonRepository().getPersonsName());
 
-        observableListA.setAll(peopleList);
-        observableListB.setAll(peopleList);
+            observableListA.setAll(peopleList);
+            observableListB.setAll(peopleList);
 
-        listViewA.setItems(observableListA);
-        listViewB.setItems(observableListB);
+            listViewA.setItems(observableListA);
+            listViewB.setItems(observableListB);
+        }
     }
 
     public void checkSelectionA()
     {
-        SelectA = (!Objects.equals(getSelection(listViewA), "[]"));
+        SelectA = !getSelection(listViewA).isEmpty();
         unlockButton();
     }
 
     public void checkSelectionB()
     {
 
-        SelectB = (!Objects.equals(getSelection(listViewB), "[]"));
+        SelectB = !getSelection(listViewB).isEmpty();
         unlockButton();
     }
 

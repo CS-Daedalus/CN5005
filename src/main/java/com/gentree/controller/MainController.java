@@ -6,17 +6,15 @@ import com.gentree.model.Relation;
 import com.gentree.service.CsvService;
 import com.gentree.service.FamilyService;
 import com.gentree.service.RepositoriesService;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
@@ -26,124 +24,124 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Deque;
-import java.util.Objects;
 
 public class MainController
 {
+    @FXML private Button testButtonA;
+    @FXML private Button testButtonB;
+    @FXML private Button testButtonC;
+    @FXML private Button importSelect;
+    @FXML private MenuButton exportSelect;
+    @FXML private TabPane tabPane;
+    /*
+    Call point for the tab pane's tabs. For every new tab,
+    you must include the fx:id of the Tab and its controller
+    with this specific format. For the tab "%ADD_NAME%":
 
-    @FXML
-    private Label welcomeText;
+        @FXML private Tab %ADD_NAME%Tab;
+        @FXML private %ADD_NAME%Controller %ADD_NAME%PageController;
+    */
+    @FXML private Tab peopleTab;
+    @FXML private PeopleController peoplePageController;
+    @FXML private Tab relationsTab;
+    @FXML private RelationsController relationsPageController;
+    /*
+    Ignore the unused Controllers, they are actually used.
+    */
 
-    @FXML
-    private Button sortButton;
-
-    @FXML
-    private Button findButton;
-
-    @FXML
-    private Button exportDotButton;
-
-    @FXML
-    private Button exportImageButton;
-
-    private boolean state = false;
-
-    @FXML
     public void initialize()
     {
-        welcomeText.setText("Hello World!");
+        /*
+        Tab selector, for every new tab, add an "else if" statement.
+        Can definitely be improved.
+         */
+        tabPane.getSelectionModel().selectedItemProperty().addListener(
+            (ObservableValue<? extends Tab> observable,
+                Tab oldValue, Tab newValue) -> {
+                    if (newValue == peopleTab) peoplePageController.init();
+                    else if (newValue == relationsTab) relationsPageController.init();
+                    });
     }
 
     @FXML
+    /*
+    Method for creating FileChooser objects destined for importing files into the program in one line.
+    Requires a NEW FileChooser to build upon and the file extensions in the format below
+    To use, declare a new variable of same type and add:
+        = importFile(new FileChooser(), new String[]{".%TYPE1%", ".%TYPE2%", ...})
+     */
+    public FileChooser importFile(FileChooser var, String[] extension)
+    {
+        var.setInitialDirectory(new File(Util.USER_HOME_DIR));
+        for (String str : extension)
+        {
+            var.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(
+                String.format("%s File", str),
+                String.format("*%s", str)));
+        }
+        return var;
+    }
+
+    @FXML
+    /*
+    Method for creating FileChooser objects destined for exporting files out of the program in one line.
+    Requires a NEW FileChooser to build upon and the file extensions in the format below
+    To use, declare a new variable of same type and add:
+        = exportFile(new FileChooser(), new String[]{".%TYPE1%", ".%TYPE2%", ...})
+     */
+    public FileChooser exportFile(FileChooser var, String[] extension)
+    {
+        var.setInitialFileName("LoremIpsum");
+        var.setInitialDirectory(new File(Util.USER_HOME_DIR));
+        for (String str : extension)
+        {
+            var.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(
+                String.format("%s File", str),
+                String.format("*%s", str)));
+        }
+        return var;
+    }
+
+    @FXML
+    // Import CSV button function.
     protected void importCsv(@NotNull ActionEvent event)
     {
-        unlockButtons();
-        state = false;
-        System.out.println("Importing csv...");
-        FileChooser fc = new FileChooser();
-        File        selectedFile;
-        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-        selectedFile = fc.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
+        FileChooser input = importFile(new FileChooser(), new String[]{".csv"});
+        File inputFile = input.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
-        if (selectedFile != null)
+        if (inputFile != null)
         {
             try
             {
                 ImmutablePair<Deque<Person.Tuple>, Deque<Relation.Tuple>> fileData =  CsvService
-                    .getInstance().readFile(selectedFile.getAbsolutePath());
+                    .getInstance().readFile(inputFile.getAbsolutePath());
 
                 RepositoriesService.getInstance().feed(fileData.getLeft(), fileData.getRight());
 
                 FamilyService.getInstance().populateFamilyTree();
-                state = true;
-                unlockButtons();
 
+                setAccess(true);
             }
             catch (IOException e)
             {
                 e.printStackTrace();
             }
-
-
-            System.out.println(selectedFile.getAbsolutePath());
         }
     }
 
     @FXML
-    protected void sortPersons(@NotNull ActionEvent event)
-        throws Exception
+    // Export Image button function
+    protected void exportImage(@NotNull ActionEvent event)
     {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(
-            Objects.requireNonNull(Thread.currentThread()
-                                         .getContextClassLoader()
-                                         .getResource("view/people.fxml")));
-        stage.setScene(new Scene(root));
-        stage.setTitle("testing");
-        stage.setResizable(false);
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.show();
-    }
+        FileChooser output = exportFile(new FileChooser(), new String[]{".jpg", ".png", ".svg"});
+        File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
 
-    @FXML
-    protected void findRelations(@NotNull ActionEvent event)
-        throws Exception
-    {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(
-            Objects.requireNonNull(Thread.currentThread()
-                                         .getContextClassLoader()
-                                         .getResource("view/relations.fxml")));
-        stage.setScene(new Scene(root));
-        stage.setTitle("testing");
-        stage.setResizable(false);
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.show();
-    }
-
-    @FXML
-    protected void exportToDot(@NotNull ActionEvent event)
-    {
-        System.out.println("Exporting DOT...");
-
-        FileChooser fileChooser = new FileChooser();
-        String      sample      = "contents of the dot file";
-
-        System.out.println("The button openExportDot was activated");
-        fileChooser.setInitialDirectory(new File(Util.USER_HOME_DIR));
-        fileChooser.setInitialFileName("Dot_file");
-        fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Dot Files", "*.dot"));
-        File file = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
-
-        if (file != null)
+        if (outputFile != null)
         {
-            saveSystem(file, sample);
-            System.out.println("Dot file created!");
-            System.out.println("Dot filename: " + file.getName());
-            System.out.println("Dot absolutePath: " + file.getAbsolutePath());
+            System.out.println("Image file created!");
+            System.out.println("Image filename: " + FilenameUtils.getBaseName(outputFile.getName()));
+            System.out.println("Image file extension: " + FilenameUtils.getExtension(outputFile.getName()));
+            System.out.println("Image absolute path: " + outputFile.getAbsolutePath());
         }
         else
         {
@@ -152,26 +150,44 @@ public class MainController
     }
 
     @FXML
-    protected void exportToImage(@NotNull ActionEvent event)
+    // Export DOT button function
+    protected void exportDot(@NotNull ActionEvent event)
     {
-        System.out.println("Exporting image...");
+        FileChooser output = exportFile(new FileChooser(), new String[]{".dot"});
+        File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
+        String sample = "contents of the dot file";
 
-        FileChooser fileChooser = new FileChooser();
-
-        System.out.println("The button openExportDot was activated");
-        fileChooser.setInitialDirectory(new File(Util.USER_HOME_DIR));
-        fileChooser.setInitialFileName("Image");
-        fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Image Files", "*.jpg"),
-            new FileChooser.ExtensionFilter("Image Files", "*.png"),
-            new FileChooser.ExtensionFilter("Image Files", "*.svg"));
-        File file = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
-        if (file != null)
+        if (outputFile != null)
         {
-            System.out.println("Image file created!");
-            System.out.println("Image filename: " + FilenameUtils.getBaseName(file.getName()));
-            System.out.println("Image file extension: " + FilenameUtils.getExtension(file.getName()));
-            System.out.println("Image absolute path: " + file.getAbsolutePath());
+            saveSystem(outputFile, sample);
+            System.out.println("Dot file created!");
+            System.out.println("Dot filename: " + outputFile.getName());
+            System.out.println("Dot absolutePath: " + outputFile.getAbsolutePath());
+        }
+        else
+        {
+            System.out.println("Aborted");
+        }
+    }
+
+    @FXML
+    // Export CSV button function
+    protected void exportCsv(@NotNull ActionEvent event)
+    {
+        FileChooser output = exportFile(new FileChooser(), new String[]{".csv"});
+        File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
+        String sample = "Lorem ipsum; dolor; sit";
+
+        if (outputFile != null)
+        {
+            saveSystem(outputFile, sample);
+            System.out.println("CSV file created!");
+            System.out.println("CSV filename: " + outputFile.getName());
+            System.out.println("CSV absolutePath: " + outputFile.getAbsolutePath());
+            /*
+            Uncomment the line below when the CSV unloader is functional.
+            setAccess(false);
+             */
         }
         else
         {
@@ -193,14 +209,23 @@ public class MainController
         }
     }
 
-    private void unlockButtons()
+    /*
+    Method controlling access to GUI elements with given bool value:
+        set TRUE for unlocking the GUI
+            or
+        set FALSE for locking the GUI
+     */
+    private void setAccess(boolean b)
     {
-        sortButton.setDisable(!state);
-        findButton.setDisable(!state);
-        exportDotButton.setDisable(!state);
-        exportImageButton.setDisable(!state);
-        state = false;
-
+        testButtonA.setDisable(!b);
+        testButtonB.setDisable(!b);
+        testButtonC.setDisable(!b);
+        exportSelect.setDisable(!b);
+        tabPane.setDisable(!b);
+        /*
+        Flips given status to disable new CSV entry until a CSV export has been done.
+        Uncomment the line below when the CSV unloader is functional.
+        importSelect.setDisable(b);
+         */
     }
-
 }

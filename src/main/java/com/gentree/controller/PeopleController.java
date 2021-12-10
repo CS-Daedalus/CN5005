@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -19,18 +18,19 @@ import java.util.List;
 public class PeopleController
 {
     private final List<String> NameList= new ArrayList<>();
-
     private final ObservableList<String> finalNameList = FXCollections.observableArrayList();
 
-    @FXML
-    private ListView<String> NamesList;
+    @FXML private ListView<String> NamesList;
 
-    public void initialize()
+    public void init()
     {
-        NameList.addAll(RepositoriesService.getInstance().getPersonRepository().getPersonsName());
+        if (NameList.isEmpty())
+        {
+            NameList.addAll(RepositoriesService.getInstance().getPersonRepository().getPersonsName());
 
-        finalNameList.setAll(NameList);
-        NamesList.setItems(finalNameList);
+            finalNameList.setAll(NameList);
+            NamesList.setItems(finalNameList);
+        }
     }
 
     @FXML
@@ -46,7 +46,7 @@ public class PeopleController
         fileChooser.setInitialFileName("Sorted Names");
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Text Document", "*.txt"));
-        File file = fileChooser.showSaveDialog(new Stage());
+        File file = fileChooser.showSaveDialog(NamesList.getScene().getWindow());
 
         if (file != null)
         {

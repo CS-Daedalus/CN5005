@@ -33,6 +33,7 @@ public class App
 
         stage.setTitle(Util.TITLE);
         stage.setScene(new Scene(root, Util.APP_WIDTH, Util.APP_HEIGHT));
+        stage.setResizable(false);
         stage.show();
     }
 

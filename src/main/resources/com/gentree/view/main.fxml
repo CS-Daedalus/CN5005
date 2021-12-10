@@ -1,26 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0"
-      xmlns="http://javafx.com/javafx/8.0.291"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.gentree.controller.MainController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-    <stylesheets>
-        <URL value="@../css/app.css" />
-    </stylesheets>
-
-    <Label fx:id="welcomeText" />
-
-    <Button onAction="#importCsv" text="Import CSV" />
-    <Button fx:id="sortButton" onAction="#sortPersons" text="Sort people" disable="true"/>
-    <Button fx:id="findButton" onAction="#findRelations" text="Find relations" disable="true"/>
-    <Button fx:id="exportDotButton" onAction="#exportToDot" text="Export to .dot" disable="true"/>
-    <Button fx:id="exportImageButton" onAction="#exportToImage" text="Export to image" disable="true"/>
-</VBox>
+<SplitPane dividerPositions="0.17391304347826086" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gentree.controller.MainController">
+      <VBox alignment="CENTER" spacing="2.0">
+         <ImageView fx:id="logo" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../../../../../img/directional.png" />
+            </image>
+         </ImageView>
+         <Label fx:id="title" text="Geneaology Tree">
+         </Label>
+         <Separator />
+         <Label opacity="0.5" text="Arrange Data" />
+         <VBox alignment="TOP_CENTER" layoutX="30.0" layoutY="30.0" prefHeight="300.0" prefWidth="100.0" spacing="10.0">
+            <Button fx:id="testButtonA" disable="true" mnemonicParsing="false" text="Add..." />
+            <Button fx:id="testButtonB" disable="true" mnemonicParsing="false" text="Remove..." />
+            <Button fx:id="testButtonC" disable="true" mnemonicParsing="false" text="Edit Person" />
+         </VBox>
+         <Separator />
+         <Button fx:id="importSelect" mnemonicParsing="false" onAction="#importCsv" text="Import CSV...">
+            <VBox.margin>
+               <Insets bottom="2.0" top="2.0" />
+            </VBox.margin>
+         </Button>
+         <MenuButton fx:id="exportSelect" contentDisplay="BOTTOM" disable="true" mnemonicParsing="false" text="Export as...">
+            <items>
+               <MenuItem fx:id="exportImage" mnemonicParsing="false" onAction="#exportImage" text="Image" />
+               <MenuItem fx:id="exportDot" mnemonicParsing="false" onAction="#exportDot" text="GraphViz (.dot)" />
+               <MenuItem fx:id="exportCsv" mnemonicParsing="false" onAction="#exportCsv" text="CSV (.csv)" />
+            </items>
+            <VBox.margin>
+               <Insets bottom="2.0" top="2.0" />
+            </VBox.margin>
+         </MenuButton>
+         <padding>
+            <Insets bottom="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <VBox>
+         <TabPane fx:id="tabPane" disable="true" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+               <!--<editor-fold desc=" USE THIS AS REFERENCE FOR ADDING TABS! ">-->
+               <Tab fx:id="testTab" text="Test">
+                  <content>
+                     <!-- Dimensions of every tab page. Use them on the .fxml files -->
+                     <Pane fx:id="testPage" prefHeight="369.0" prefWidth="524.0" />
+                  </content>
+               </Tab>
+               <!--</editor-fold>-->
+               <Tab fx:id="relationsTab" text="Compare Relations">
+                  <content>
+                     <fx:include fx:id="relationsPage" source="relations.fxml" />
+                  </content>
+               </Tab>
+               <Tab fx:id="peopleTab" text="Sort People">
+                  <content>
+                     <fx:include fx:id="peoplePage" source="people.fxml" />
+                  </content>
+               </Tab>
+            </tabs>
+         </TabPane>
+      </VBox>
+</SplitPane>
