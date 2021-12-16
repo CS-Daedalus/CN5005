@@ -21,7 +21,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -138,11 +140,12 @@ public class MainController
     // Export Image button function
     protected void exportImage(@NotNull ActionEvent event) throws IOException
     {
-        FileChooser output = exportFile(new FileChooser(), new String[]{".jpg", ".png", ".svg"});
+        FileChooser output = exportFile(new FileChooser(), new String[]{".jpeg", ".png", ".svg"});
         File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
 
         if (outputFile != null)
         {
+
             createDotGraph(dotExport(),outputFile.getAbsolutePath(),FilenameUtils.getExtension(outputFile.getName()));
             System.out.println("Image file created!");
             System.out.println("Image filename: " + FilenameUtils.getBaseName(outputFile.getName()));
@@ -245,9 +248,12 @@ public class MainController
             case "png":
                 Graphviz.fromString(dotExport).render(Format.PNG).toFile(new File(filepath));
                 break;
-            //case "jpeg":
-            //    Graphviz.fromString(dotExport).height(1000).width(1000).render(Format.JPEG).toFile(new File(filepath));
-            //    break;
+            case "jpeg":
+                BufferedImage img =Graphviz.fromString(dotExport).render(Format.PNG).toImage();
+                BufferedImage temp = new BufferedImage( img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+                temp.createGraphics().drawImage( img, 0, 0, Color.BLACK, null);
+                ImageIO.write(temp,"JPEG", new File(filepath));
+                break;
             case "svg":
                 Graphviz.fromString(dotExport).render(Format.SVG).toFile(new File(filepath));
                 break;
