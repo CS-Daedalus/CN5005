@@ -6,6 +6,8 @@ import com.gentree.model.Relation;
 import com.gentree.service.CsvService;
 import com.gentree.service.FamilyService;
 import com.gentree.service.RepositoriesService;
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -134,13 +136,14 @@ public class MainController
 
     @FXML
     // Export Image button function
-    protected void exportImage(@NotNull ActionEvent event)
+    protected void exportImage(@NotNull ActionEvent event) throws IOException
     {
         FileChooser output = exportFile(new FileChooser(), new String[]{".jpg", ".png", ".svg"});
         File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
 
         if (outputFile != null)
         {
+            createDotGraph(dotExport(),outputFile.getAbsolutePath(),FilenameUtils.getExtension(outputFile.getName()));
             System.out.println("Image file created!");
             System.out.println("Image filename: " + FilenameUtils.getBaseName(outputFile.getName()));
             System.out.println("Image file extension: " + FilenameUtils.getExtension(outputFile.getName()));
@@ -154,13 +157,14 @@ public class MainController
 
     @FXML
     // Export DOT button function
-    protected void exportDot(@NotNull ActionEvent event) throws IOException {
+    protected void exportDot(@NotNull ActionEvent event) throws IOException
+    {
         FileChooser output = exportFile(new FileChooser(), new String[]{".dot"});
         File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
 
         if (outputFile != null)
         {
-            saveSystem(outputFile, dotExport());
+            createDotGraph(dotExport(),outputFile.getAbsolutePath(),"dot");
             System.out.println("Dot file created!");
             System.out.println("Dot filename: " + outputFile.getName());
             System.out.println("Dot absolutePath: " + outputFile.getAbsolutePath());
@@ -228,6 +232,28 @@ public class MainController
         Uncomment the line below when the CSV unloader is functional.
         importSelect.setDisable(b);
          */
+    }
+
+    public static void createDotGraph(String dotExport,String filepath,String format) throws IOException
+    {
+
+        switch (format)
+        {
+            case "dot":
+                Graphviz.fromString(dotExport).render(Format.DOT).toFile(new File(filepath));
+                break;
+            case "png":
+                Graphviz.fromString(dotExport).render(Format.PNG).toFile(new File(filepath));
+                break;
+            //case "jpeg":
+            //    Graphviz.fromString(dotExport).height(1000).width(1000).render(Format.JPEG).toFile(new File(filepath));
+            //    break;
+            case "svg":
+                Graphviz.fromString(dotExport).render(Format.SVG).toFile(new File(filepath));
+                break;
+
+        }
+
     }
 
     private String dotExport() throws IOException {
