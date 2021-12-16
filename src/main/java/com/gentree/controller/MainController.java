@@ -157,52 +157,10 @@ public class MainController
     protected void exportDot(@NotNull ActionEvent event) throws IOException {
         FileChooser output = exportFile(new FileChooser(), new String[]{".dot"});
         File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
-        File csvFile = new File(csvInputPath);
-        FileReader csvFileReader = new FileReader(csvFile);
-        BufferedReader csvBufferedReader = new BufferedReader(csvFileReader);
-        List<String> csvLines = new ArrayList<>();
-        String temp_line = null;
-        String dot_output = "";
-        String[] tempArray;
-        String[] secondTempArray = null;
-        int temp_var;
-        temp_line = csvBufferedReader.readLine();
-        while (temp_line != null){
-            csvLines.add(temp_line);
-            temp_line = csvBufferedReader.readLine();
-        }
-        csvBufferedReader.close();
-        dot_output += "digraph G{\nedge [dir=none];\nnode [shape=box];\ngraph [splines=ortho];\n";
-        int i=0;
-        while (i< csvLines.size()){
-            tempArray = csvLines.get(i).split(",");
-            if (i < csvLines.size() - 1){
-                secondTempArray = csvLines.get(i+1).split(",");
-            }
-            if (tempArray[1].equalsIgnoreCase(" man")){
-                dot_output += "\"" + tempArray[0] + "\"" + " [shape=box, regular=0, color=\"blue\", style=\"filled\", fillcolor=\"lightblue\"];\n";
-            }else if (tempArray[1].equalsIgnoreCase(" husband")){
-                dot_output += tempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " [shape=diamond, label=\"\", height=0.25, width=0.25];\n{rank=same; \"" + tempArray[0].trim() + "\" -> " + tempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " -> \"" + tempArray[2].trim() + "\"};\n";
-            }else if (tempArray[1].equalsIgnoreCase(" woman")){
-                dot_output += "\"" + tempArray[0] + "\"" + " [shape=oval, regular=0, color=\"red\", style=\"filled\", fillcolor=\"pink\"];\n";
-            }else if ((tempArray[1].equalsIgnoreCase(" father")) && (secondTempArray[1].equalsIgnoreCase(" mother")) && (tempArray[2].trim().equalsIgnoreCase(secondTempArray[2].trim()))){
-                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + "Children [shape=circle, label=\"\", height=0.01, width=0.01];\n";
-                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + " -> " + tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + "Children\n";
-                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " [shape=circle, label=\"\", height=0.01, width=0.01];\n";
-                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " -> \"" + tempArray[2].trim() + "\"\n";
-                dot_output += "{rank=same; " + tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " -> " + tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + "Children};\n";
-                i++;
-                secondTempArray = null;
-            }else if ((tempArray[1].equalsIgnoreCase(" mother")) || ((tempArray[1].equalsIgnoreCase(" father")))){
-                dot_output += "\"" + tempArray[0].trim() + "\"" + " -> \"" + tempArray[2].trim() + "\"\n";
-            }
-            i++;
-        }
-        dot_output += "}\n";
 
         if (outputFile != null)
         {
-            saveSystem(outputFile, dot_output);
+            saveSystem(outputFile, dotExport());
             System.out.println("Dot file created!");
             System.out.println("Dot filename: " + outputFile.getName());
             System.out.println("Dot absolutePath: " + outputFile.getAbsolutePath());
@@ -270,5 +228,52 @@ public class MainController
         Uncomment the line below when the CSV unloader is functional.
         importSelect.setDisable(b);
          */
+    }
+
+    private String dotExport() throws IOException {
+        File csvFile = new File(csvInputPath);
+        FileReader csvFileReader = new FileReader(csvFile);
+        BufferedReader csvBufferedReader = new BufferedReader(csvFileReader);
+        List<String> csvLines = new ArrayList<>();
+        String temp_line = null;
+        String dot_output = "";
+        String[] tempArray;
+        String[] secondTempArray = null;
+        int temp_var;
+        temp_line = csvBufferedReader.readLine();
+        while (temp_line != null){
+            csvLines.add(temp_line);
+            temp_line = csvBufferedReader.readLine();
+        }
+        csvBufferedReader.close();
+        dot_output += "digraph G{\nedge [dir=none];\nnode [shape=box];\ngraph [splines=line];\n";
+        int i=0;
+        while (i< csvLines.size()){
+            tempArray = csvLines.get(i).split(",");
+            if (i < csvLines.size() - 1){
+                secondTempArray = csvLines.get(i+1).split(",");
+            }
+            if (tempArray[1].equalsIgnoreCase(" man")){
+                dot_output += "\"" + tempArray[0] + "\"" + " [shape=box, regular=0, color=\"blue\", style=\"filled\", fillcolor=\"lightblue\"];\n";
+            }else if (tempArray[1].equalsIgnoreCase(" husband")){
+                dot_output += tempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " [shape=diamond, label=\"\", height=0.5, width=0.5];\n{rank=same; \"" + tempArray[0].trim() + "\" -> " + tempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " -> \"" + tempArray[2].trim() + "\"};\n";
+            }else if (tempArray[1].equalsIgnoreCase(" woman")){
+                dot_output += "\"" + tempArray[0] + "\"" + " [shape=oval, regular=0, color=\"red\", style=\"filled\", fillcolor=\"pink\"];\n";
+            }else if ((tempArray[1].equalsIgnoreCase(" father")) && (secondTempArray[1].equalsIgnoreCase(" mother")) && (tempArray[2].trim().equalsIgnoreCase(secondTempArray[2].trim()))){
+                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + "Children [shape=circle, label=\"\", height=0.5, width=0.5];\n";
+                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + " -> " + tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + "Children\n";
+                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " [shape=circle, label=\"\", height=0.5, width=0.05];\n";
+                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " -> \"" + tempArray[2].trim() + "\"\n";
+                dot_output += "{rank=same; " + tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " -> " + tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + "Children};\n";
+                i++;
+                secondTempArray = null;
+            }else if ((tempArray[1].equalsIgnoreCase(" mother")) || ((tempArray[1].equalsIgnoreCase(" father")))){
+                dot_output += "\"" + tempArray[0].trim() + "\"" + " -> \"" + tempArray[2].trim() + "\"\n";
+            }
+            i++;
+        }
+        dot_output += "}\n";
+
+        return dot_output;
     }
 }
