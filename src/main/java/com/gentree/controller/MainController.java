@@ -67,13 +67,14 @@ public class MainController
             });
     }
 
-    @FXML
-    /*
-    Method for creating FileChooser objects destined for importing files into the program in one line.
-    Requires a NEW FileChooser to build upon and the file extensions in the format below
-    To use, declare a new variable of same type and add:
-        = importFile(new FileChooser(), new String[]{".%TYPE1%", ".%TYPE2%", ...})
+    /**
+     * Create a file selection window with given file filtering.
+     *
+     * @param var {@code new FileChooser()}
+     * @param extension String table with file extensions
+     * @return FileChooser
      */
+    @FXML
     public FileChooser importFile(FileChooser var, String[] extension)
     {
         var.setInitialDirectory(new File(Util.USER_HOME_DIR));
@@ -214,11 +215,10 @@ public class MainController
         }
     }
 
-    /*
-    Method controlling access to GUI elements with given bool value:
-        set TRUE for unlocking the GUI
-            or
-        set FALSE for locking the GUI
+    /**
+     * Switch functional GUI elements with given bool value.
+     *
+     * @param b Switch
      */
     private void setAccess(boolean b)
     {
