@@ -271,11 +271,31 @@ public class MainController
     {
         FileChooser output = exportFile(new FileChooser(), new String[]{".csv"});
         File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
-        String sample = "Lorem ipsum; dolor; sit";
 
         if (outputFile != null)
         {
-            saveSystem(outputFile, sample);
+            StringBuilder fileContents = new StringBuilder();
+            RepositoriesService repositoriesService = RepositoriesService.getInstance();
+
+            // Iterate through the list of people
+            for (Person person : repositoriesService.getPersonRepository().findAll())
+                fileContents.append(String.format(
+                    "%s, %s%n",
+                    person.getFullName(),
+                    person.getGender().toString()
+                ));
+
+            // Iterate through the list of relations
+            for (Relation relation : repositoriesService.getRelationRepository().findAll())
+                fileContents.append(String.format(
+                    "%s, %s, %s%n",
+                    relation.getPerson1().getFullName(),
+                    relation.getBond().toString(),
+                    relation.getPerson2().getFullName()
+                ));
+
+
+            saveSystem(outputFile, fileContents.toString());
             System.out.println("CSV file created!");
             System.out.println("CSV filename: " + outputFile.getName());
             System.out.println("CSV absolutePath: " + outputFile.getAbsolutePath());
