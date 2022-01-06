@@ -11,7 +11,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
 <SplitPane dividerPositions="0.17391304347826086" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gentree.controller.MainController">
@@ -53,14 +53,6 @@
       <VBox>
          <TabPane fx:id="tabPane" disable="true" tabClosingPolicy="UNAVAILABLE">
             <tabs>
-               <!--<editor-fold desc=" USE THIS AS REFERENCE FOR ADDING TABS! ">-->
-               <Tab fx:id="testTab" text="Test">
-                  <content>
-                     <!-- Dimensions of every tab page. Use them on the .fxml files -->
-                     <Pane fx:id="testPage" prefHeight="369.0" prefWidth="524.0" />
-                  </content>
-               </Tab>
-               <!--</editor-fold>-->
                <Tab fx:id="relationsTab" text="Compare Relations">
                   <content>
                      <fx:include fx:id="relationsPage" source="relations.fxml" />
@@ -69,6 +61,22 @@
                <Tab fx:id="peopleTab" text="Sort People">
                   <content>
                      <fx:include fx:id="peoplePage" source="people.fxml" />
+                  </content>
+               </Tab>
+               <Tab fx:id="creditsTab" text="Credits">
+                  <content>
+                  <AnchorPane prefHeight="369.0" prefWidth="524.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label text="Panagiotis Kosmidis" />
+                              <Label text="Alexandros Zormpas" />
+                              <Label text="Konstantinos Lianos" />
+                              <Label text="Grigorios Kastanias" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
                   </content>
                </Tab>
             </tabs>
