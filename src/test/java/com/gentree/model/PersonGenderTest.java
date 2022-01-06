@@ -19,7 +19,7 @@ public class PersonGenderTest
     {
         List<String> actual = Person.Gender.getSupportedGenders();
         List<String> expected = new ArrayList<>(Arrays.asList(
-            "WOMAN","MAN"
+            "UNKNOWN","WOMAN","MAN"
         ));
 
         assertEquals(expected, actual);
