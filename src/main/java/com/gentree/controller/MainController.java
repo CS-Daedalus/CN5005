@@ -6,6 +6,8 @@ import com.gentree.model.Relation;
 import com.gentree.service.CsvService;
 import com.gentree.service.FamilyService;
 import com.gentree.service.RepositoriesService;
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -145,6 +147,7 @@ public class MainController
     @FXML
     // Export Image button function
     protected void exportImage(@NotNull ActionEvent event)
+        throws IOException
     {
         FileChooser output = exportFile(new FileChooser(), new String[]{".jpeg", ".png", ".svg"});
         File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
