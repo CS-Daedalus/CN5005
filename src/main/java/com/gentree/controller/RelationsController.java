@@ -20,6 +20,7 @@ public class RelationsController
     private final List<String> peopleList = new ArrayList<>();
     private final ObservableList<String> observableListA = FXCollections.observableArrayList();
     private final ObservableList<String> observableListB = FXCollections.observableArrayList();
+    private int repositoryVersion;
 
     @FXML private ListView<String> listViewA;
     @FXML private ListView<String> listViewB;
@@ -32,9 +33,11 @@ public class RelationsController
     @FXML
     public void init()
     {
+        RepositoriesService repositoriesService = RepositoriesService.getInstance();
+
         if (peopleList.isEmpty())
         {
-            peopleList.addAll(RepositoriesService.getInstance().getPersonRepository().getPersonsName());
+            peopleList.addAll(repositoriesService.getPersonRepository().getPersonsName());
 
             observableListA.setAll(peopleList);
             observableListB.setAll(peopleList);
@@ -42,6 +45,13 @@ public class RelationsController
             listViewA.setItems(observableListA);
             listViewB.setItems(observableListB);
         }
+        else if (repositoriesService.getVersion() != repositoryVersion)
+        {
+            peopleList.clear();
+            init();
+        }
+
+        repositoryVersion = repositoriesService.getVersion();
     }
 
     public void checkSelectionA()

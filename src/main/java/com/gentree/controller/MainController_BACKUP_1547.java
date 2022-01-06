@@ -19,9 +19,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 
+<<<<<<< HEAD
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+=======
+>>>>>>> b0517538f8d183a49c30d48b3920ddb0323d8dff
 import java.io.*;
 import java.util.*;
 import java.util.List;
@@ -151,8 +154,11 @@ public class MainController
 
         if (outputFile != null)
         {
+<<<<<<< HEAD
 
             createDotGraph(dotExport(),outputFile.getAbsolutePath(),FilenameUtils.getExtension(outputFile.getName()));
+=======
+>>>>>>> b0517538f8d183a49c30d48b3920ddb0323d8dff
             System.out.println("Image file created!");
             System.out.println("Image filename: " + FilenameUtils.getBaseName(outputFile.getName()));
             System.out.println("Image file extension: " + FilenameUtils.getExtension(outputFile.getName()));
@@ -347,6 +353,7 @@ public class MainController
         importSelect.setDisable(b);
          */
     }
+<<<<<<< HEAD
 
     public static void createDotGraph(String dotExport,String filepath,String format) throws IOException
     {
@@ -419,4 +426,6 @@ public class MainController
 
         return dot_output;
     }
+=======
+>>>>>>> b0517538f8d183a49c30d48b3920ddb0323d8dff
 }

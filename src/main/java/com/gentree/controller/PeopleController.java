@@ -19,18 +19,28 @@ public class PeopleController
 {
     private final List<String> NameList= new ArrayList<>();
     private final ObservableList<String> finalNameList = FXCollections.observableArrayList();
+    private int repositoryVersion;
 
     @FXML private ListView<String> NamesList;
 
     public void init()
     {
+        RepositoriesService repositoriesService = RepositoriesService.getInstance();
+
         if (NameList.isEmpty())
         {
-            NameList.addAll(RepositoriesService.getInstance().getPersonRepository().getPersonsName());
+            NameList.addAll(repositoriesService.getPersonRepository().getPersonsName());
 
             finalNameList.setAll(NameList);
             NamesList.setItems(finalNameList);
         }
+        else if (repositoriesService.getVersion() != repositoryVersion)
+        {
+            NameList.clear();
+            init();
+        }
+
+        repositoryVersion = repositoriesService.getVersion();
     }
 
     @FXML

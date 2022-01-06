@@ -317,6 +317,16 @@ public class Graph<K, V extends Comparable<V>>
     }
 
     /**
+     * Resets the graph to an empty state
+     */
+    public void resetGraph()
+    {
+        vertices.clear();
+        edges.clear();
+        root = null;
+    }
+
+    /**
      * Get string of Vertex with all it's ingoing and outgoing adjacencies
      *
      * @return string

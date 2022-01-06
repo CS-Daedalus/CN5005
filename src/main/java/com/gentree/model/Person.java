@@ -180,7 +180,8 @@ public class Person implements Comparable<Person>
 
     public enum Gender
     {
-        WOMAN(0),
+        UNKNOWN(0),
+        WOMAN(2),
         MAN(1);
 
         private final double value;
