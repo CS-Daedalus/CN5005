@@ -61,25 +61,24 @@ public class FamilyService
         );
     }
 
-    public void findBond(Person person1, Person person2)
+    public Relation.Bond findBond(Person person1, Person person2)
     {
         //TODO: Incomplete implementation
         List<ImmutablePair<Person, Double>> path = family.getPath(person1, person2);
-        //Relation.Bond bond = Relation.Bond.getBondByValue(
-        //    path.size() + path.get(path.size() - 1).right + person1.getGender().getValue()
-        //);
 
         Relation.Key current_key = new Relation.Key(path.size(), path.get(path.size() - 1).right, person1.getGender());
+
+        Relation.Bond bond = Relation.Bond.getBondByKey(current_key);
 
         System.out.println("path size: " + path.size());
         System.out.println("weight: " + path.get(path.size() - 1).right);
         System.out.println("gender value: " + person1.getGender().getValue());
         System.out.println("Current bond key hash: " + current_key.hashCode());
         System.out.println("Current bond name: " + Relation.Bond.getBondByKey(current_key));
-        System.out.println();
         System.out.println("+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
+        System.out.println();
 
-        //return Relation.Bond.MOTHER;
+        return bond;
     }
 
     private void addFamilyMembers(@NotNull Iterable<Person> familyMembers)
