@@ -14,13 +14,13 @@
       <children>
          <HBox alignment="CENTER" spacing="5.0">
             <children>
-                <ListView fx:id="listViewB" onMouseClicked="#checkSelectionB" />
+                <ListView fx:id="listViewA" onMouseClicked="#checkSelectionA" />
                <Separator orientation="VERTICAL">
                   <HBox.margin>
                      <Insets />
                   </HBox.margin></Separator>
             
-                <ListView fx:id="listViewA" onMouseClicked="#checkSelectionA" />
+                <ListView fx:id="listViewB" onMouseClicked="#checkSelectionB" />
             </children>
          </HBox>
           <Label fx:id="outputLabel" alignment="CENTER" contentDisplay="TEXT_ONLY" text="Select two names to find their relation." />

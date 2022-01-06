@@ -20,6 +20,8 @@ public class RepositoriesService
     private static volatile RepositoriesService instance;
     private final PersonRepository personRepository;
     private final RelationRepository relationRepository;
+    private boolean isInitialised = false;
+    private int version = 0;
 
     private RepositoriesService()
     {
@@ -49,6 +51,9 @@ public class RepositoriesService
 
     public void feed(@NotNull Deque<Person.Tuple> personTuples, @NotNull Deque<Relation.Tuple> relationTuples)
     {
+        isInitialised = true;
+        version++;
+
         // First process the persons
         do
         {
@@ -66,6 +71,23 @@ public class RepositoriesService
                 relationRepository.insert(tuple);
         }
         while (!relationTuples.isEmpty());
+    }
+
+    public boolean isInitialised()
+    {
+        return isInitialised;
+    }
+
+    public int getVersion()
+    {
+        return version;
+    }
+
+    public void reset()
+    {
+        personRepository.reset();
+        relationRepository.reset();
+        isInitialised = false;
     }
 
     public PersonRepository getPersonRepository()
@@ -115,6 +137,11 @@ public class RepositoriesService
         {
             return store.values();
         }
+
+        public void reset()
+        {
+            store.clear();
+        }
     }
 
     /**
@@ -159,6 +186,11 @@ public class RepositoriesService
         public @NotNull Iterable<Relation> findAll()
         {
             return store;
+        }
+
+        public void reset()
+        {
+            store.clear();
         }
     }
 }

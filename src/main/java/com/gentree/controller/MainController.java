@@ -19,7 +19,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
@@ -111,17 +110,23 @@ public class MainController
     {
         FileChooser input = importFile(new FileChooser(), new String[]{".csv"});
         File inputFile = input.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
-        // Store the path, where the csv file is located
-        csvInputPath = inputFile.getAbsolutePath();
 
         if (inputFile != null)
         {
+            // Store the path, where the csv file is located
+            csvInputPath = inputFile.getAbsolutePath();
+
             try
             {
                 ImmutablePair<Deque<Person.Tuple>, Deque<Relation.Tuple>> fileData =  CsvService
                     .getInstance().readFile(inputFile.getAbsolutePath());
 
-                RepositoriesService.getInstance().feed(fileData.getLeft(), fileData.getRight());
+                RepositoriesService repositoriesService = RepositoriesService.getInstance();
+
+                if (repositoriesService.isInitialised())
+                    repositoriesService.reset();
+
+                repositoriesService.feed(fileData.getLeft(), fileData.getRight());
 
                 FamilyService.getInstance().populateFamilyTree();
 
