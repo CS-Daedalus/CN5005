@@ -155,7 +155,7 @@ public class MainController
         if (outputFile != null)
         {
 
-            createDotGraph(dotExport(),outputFile.getAbsolutePath(),FilenameUtils.getExtension(outputFile.getName()));
+            createDotGraph(generateTreeDot(),outputFile.getAbsolutePath(),FilenameUtils.getExtension(outputFile.getName()));
             System.out.println("Image file created!");
             System.out.println("Image filename: " + FilenameUtils.getBaseName(outputFile.getName()));
             System.out.println("Image file extension: " + FilenameUtils.getExtension(outputFile.getName()));
@@ -172,26 +172,12 @@ public class MainController
     protected void exportDot(@NotNull ActionEvent event) throws IOException {
         FileChooser output = exportFile(new FileChooser(), new String[]{".dot"});
         File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
-        // Take the csv file from the stored path and read it
-        File csvFile = new File(csvInputPath);
-        FileReader csvFileReader = new FileReader(csvFile);
-        BufferedReader csvBufferedReader = new BufferedReader(csvFileReader);
-        List<String> csvFileLines = new ArrayList<>();
-        String temp_line = null;
-        // This is the final content of the dot file
-        String final_dot_output = "";
-        // Read the lines of the csv file one by one
-        temp_line = csvBufferedReader.readLine();
-        while (temp_line != null){
-            csvFileLines.add(temp_line);
-            temp_line = csvBufferedReader.readLine();
-        }
-        csvBufferedReader.close();
+
+
         // Get the final content of the dot file
-        final_dot_output = generateTreeDot(csvFileLines);
         if (outputFile != null)
         {
-            saveSystem(outputFile, final_dot_output);
+            createDotGraph(generateTreeDot(),outputFile.getAbsolutePath(),"dot");
             System.out.println("Dot file created!");
             System.out.println("Dot filename: " + outputFile.getName());
             System.out.println("Dot absolutePath: " + outputFile.getAbsolutePath());
@@ -202,8 +188,73 @@ public class MainController
         }
     }
 
+    @FXML
+    // Export CSV button function
+    protected void exportCsv(@NotNull ActionEvent event)
+    {
+        FileChooser output = exportFile(new FileChooser(), new String[]{".csv"});
+        File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
+
+        if (outputFile != null)
+        {
+            StringBuilder fileContents = new StringBuilder();
+            RepositoriesService repositoriesService = RepositoriesService.getInstance();
+
+            // Iterate through the list of people
+            for (Person person : repositoriesService.getPersonRepository().findAll())
+                fileContents.append(String.format(
+                    "%s, %s%n",
+                    person.getFullName(),
+                    person.getGender().toString()
+                ));
+
+            // Iterate through the list of relations
+            for (Relation relation : repositoriesService.getRelationRepository().findAll())
+                fileContents.append(String.format(
+                    "%s, %s, %s%n",
+                    relation.getPerson1().getFullName(),
+                    relation.getBond().toString(),
+                    relation.getPerson2().getFullName()
+                ));
+
+
+            saveSystem(outputFile, fileContents.toString());
+            System.out.println("CSV file created!");
+            System.out.println("CSV filename: " + outputFile.getName());
+            System.out.println("CSV absolutePath: " + outputFile.getAbsolutePath());
+            /*
+            Uncomment the line below when the CSV unloader is functional.
+            setAccess(false);
+             */
+        }
+        else
+        {
+            System.out.println("Aborted");
+        }
+    }
+
     // Generate the output of the dot file based on the lines of the csv file
-    protected String generateTreeDot(List<String> csvLines) {
+    protected String generateTreeDot()
+    {
+        List<String> csvLines = new ArrayList<>();
+        RepositoriesService repositoriesService = RepositoriesService.getInstance();
+
+        // Iterate through the list of people
+        for (Person person : repositoriesService.getPersonRepository().findAll())
+            csvLines.add(String.format(
+                    "%s, %s%n",
+                    person.getFullName(),
+                    person.getGender().toString()
+            ));
+
+        // Iterate through the list of relations
+        for (Relation relation : repositoriesService.getRelationRepository().findAll())
+            csvLines.add(String.format(
+                    "%s, %s, %s%n",
+                    relation.getPerson1().getFullName(),
+                    relation.getBond().toString(),
+                    relation.getPerson2().getFullName()
+            ));
         // Generated output
         String dot_output = "";
         String temp_dot_output = "";
@@ -273,51 +324,6 @@ public class MainController
         return dot_output;
     }
 
-    @FXML
-    // Export CSV button function
-    protected void exportCsv(@NotNull ActionEvent event)
-    {
-        FileChooser output = exportFile(new FileChooser(), new String[]{".csv"});
-        File outputFile = output.showSaveDialog(exportSelect.getScene().getWindow());
-
-        if (outputFile != null)
-        {
-            StringBuilder fileContents = new StringBuilder();
-            RepositoriesService repositoriesService = RepositoriesService.getInstance();
-
-            // Iterate through the list of people
-            for (Person person : repositoriesService.getPersonRepository().findAll())
-                fileContents.append(String.format(
-                    "%s, %s%n",
-                    person.getFullName(),
-                    person.getGender().toString()
-                ));
-
-            // Iterate through the list of relations
-            for (Relation relation : repositoriesService.getRelationRepository().findAll())
-                fileContents.append(String.format(
-                    "%s, %s, %s%n",
-                    relation.getPerson1().getFullName(),
-                    relation.getBond().toString(),
-                    relation.getPerson2().getFullName()
-                ));
-
-
-            saveSystem(outputFile, fileContents.toString());
-            System.out.println("CSV file created!");
-            System.out.println("CSV filename: " + outputFile.getName());
-            System.out.println("CSV absolutePath: " + outputFile.getAbsolutePath());
-            /*
-            Uncomment the line below when the CSV unloader is functional.
-            setAccess(false);
-             */
-        }
-        else
-        {
-            System.out.println("Aborted");
-        }
-    }
-
     private void saveSystem(File file, String content)
     {
         try
@@ -376,50 +382,4 @@ public class MainController
 
     }
 
-    private String dotExport() throws IOException {
-        File csvFile = new File(csvInputPath);
-        FileReader csvFileReader = new FileReader(csvFile);
-        BufferedReader csvBufferedReader = new BufferedReader(csvFileReader);
-        List<String> csvLines = new ArrayList<>();
-        String temp_line = null;
-        String dot_output = "";
-        String[] tempArray;
-        String[] secondTempArray = null;
-        int temp_var;
-        temp_line = csvBufferedReader.readLine();
-        while (temp_line != null){
-            csvLines.add(temp_line);
-            temp_line = csvBufferedReader.readLine();
-        }
-        csvBufferedReader.close();
-        dot_output += "digraph G{\nedge [dir=none];\nnode [shape=box];\ngraph [splines=line];\n";
-        int i=0;
-        while (i< csvLines.size()){
-            tempArray = csvLines.get(i).split(",");
-            if (i < csvLines.size() - 1){
-                secondTempArray = csvLines.get(i+1).split(",");
-            }
-            if (tempArray[1].equalsIgnoreCase(" man")){
-                dot_output += "\"" + tempArray[0] + "\"" + " [shape=box, regular=0, color=\"blue\", style=\"filled\", fillcolor=\"lightblue\"];\n";
-            }else if (tempArray[1].equalsIgnoreCase(" husband")){
-                dot_output += tempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " [shape=diamond, label=\"\", height=0.5, width=0.5];\n{rank=same; \"" + tempArray[0].trim() + "\" -> " + tempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " -> \"" + tempArray[2].trim() + "\"};\n";
-            }else if (tempArray[1].equalsIgnoreCase(" woman")){
-                dot_output += "\"" + tempArray[0] + "\"" + " [shape=oval, regular=0, color=\"red\", style=\"filled\", fillcolor=\"pink\"];\n";
-            }else if ((tempArray[1].equalsIgnoreCase(" father")) && (secondTempArray[1].equalsIgnoreCase(" mother")) && (tempArray[2].trim().equalsIgnoreCase(secondTempArray[2].trim()))){
-                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + "Children [shape=circle, label=\"\", height=0.5, width=0.5];\n";
-                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + " -> " + tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + "Children\n";
-                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " [shape=circle, label=\"\", height=0.5, width=0.05];\n";
-                dot_output += tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " -> \"" + tempArray[2].trim() + "\"\n";
-                dot_output += "{rank=same; " + tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + tempArray[2].replaceAll("\\s", "") + " -> " + tempArray[0].replaceAll("\\s", "") + secondTempArray[0].replaceAll("\\s", "") + "Children};\n";
-                i++;
-                secondTempArray = null;
-            }else if ((tempArray[1].equalsIgnoreCase(" mother")) || ((tempArray[1].equalsIgnoreCase(" father")))){
-                dot_output += "\"" + tempArray[0].trim() + "\"" + " -> \"" + tempArray[2].trim() + "\"\n";
-            }
-            i++;
-        }
-        dot_output += "}\n";
-
-        return dot_output;
-    }
 }
