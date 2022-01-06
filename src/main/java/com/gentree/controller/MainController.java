@@ -30,9 +30,6 @@ import java.util.List;
 
 public class MainController
 {
-    @FXML private Button testButtonA;
-    @FXML private Button testButtonB;
-    @FXML private Button testButtonC;
     @FXML private Button importSelect;
     @FXML private MenuButton exportSelect;
     @FXML private TabPane tabPane;
@@ -345,9 +342,6 @@ public class MainController
      */
     private void setAccess(boolean b)
     {
-        testButtonA.setDisable(!b);
-        testButtonB.setDisable(!b);
-        testButtonC.setDisable(!b);
         exportSelect.setDisable(!b);
         tabPane.setDisable(!b);
         /*
