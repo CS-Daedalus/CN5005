@@ -17,7 +17,6 @@ import java.util.List;
 
 public class PeopleController
 {
-    private final List<String> NameList= new ArrayList<>();
     private final ObservableList<String> finalNameList = FXCollections.observableArrayList();
     private int repositoryVersion;
 
@@ -27,16 +26,14 @@ public class PeopleController
     {
         RepositoriesService repositoriesService = RepositoriesService.getInstance();
 
-        if (NameList.isEmpty())
+        if (finalNameList.isEmpty())
         {
-            NameList.addAll(repositoriesService.getPersonRepository().getPersonsName());
-
-            finalNameList.setAll(NameList);
+            finalNameList.addAll(repositoriesService.getPersonRepository().getPersonsName());
             NamesList.setItems(finalNameList);
         }
         else if (repositoriesService.getVersion() != repositoryVersion)
         {
-            NameList.clear();
+            finalNameList.clear();
             init();
         }
 
@@ -60,7 +57,7 @@ public class PeopleController
 
         if (file != null)
         {
-            saveSystem(file, NameList);
+            saveSystem(file, finalNameList);
             System.out.println("Text document successfully created!");
             System.out.println("File name: " + file.getName());
             System.out.println("File Path: " + file.getAbsolutePath());
