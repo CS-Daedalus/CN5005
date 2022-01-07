@@ -21,7 +21,7 @@
                <Image url="@../images/logoSmall.png" />
             </image>
          </ImageView>
-         <Label fx:id="title" text="Geneaology Tree">
+         <Label fx:id="title" text="Genealogy Tree">
          </Label>
          <Separator />
          <Label opacity="0.5" text="Arrange Data" />
