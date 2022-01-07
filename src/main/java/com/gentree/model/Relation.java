@@ -270,7 +270,7 @@ public class Relation
         NONE(new Key(0, 0));
 
         private final Key key;
-        private static int findByKeyAttempts = 0;
+        private static int findByKeyRetryAttempts = 0;
 
         Bond(final Key key)
         {
@@ -312,20 +312,21 @@ public class Relation
          */
         public static @NotNull Bond getBondByKey(Key key)
         {
-            findByKeyAttempts++;
-
             Optional<Bond> b = Arrays.stream(
                 Bond.values()).filter(bond -> bond.getKey().hashCode() == key.hashCode()).findFirst();
 
             if (b.isPresent())
             {
-                findByKeyAttempts = 0;
+                findByKeyRetryAttempts = 0;
                 return b.get();
             }
 
-            if (1 == findByKeyAttempts)
+            if (0 == findByKeyRetryAttempts)
+            {
+                findByKeyRetryAttempts++;
                 // try second time but with gender-neutral key
                 return getBondByKey(key.setGender(Person.Gender.UNKNOWN));
+            }
 
             return NONE;
         }
