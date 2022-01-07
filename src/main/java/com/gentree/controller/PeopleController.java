@@ -50,7 +50,7 @@ public class PeopleController
 
         System.out.println("The button saveSortedPeople was activated");
         fileChooser.setInitialDirectory(new File(Util.USER_DOWNLOAD_DIR));
-        fileChooser.setInitialFileName("Sorted Names");
+        fileChooser.setInitialFileName("people-sorted");
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Text Document", "*.txt"));
         File file = fileChooser.showSaveDialog(NamesList.getScene().getWindow());

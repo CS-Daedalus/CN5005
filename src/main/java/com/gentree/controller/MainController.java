@@ -95,7 +95,7 @@ public class MainController
      */
     public FileChooser exportFile(FileChooser var, String[] extension)
     {
-        var.setInitialFileName("LoremIpsum");
+        var.setInitialFileName("genealogy-tree");
         var.setInitialDirectory(new File(Util.USER_DOWNLOAD_DIR));
         for (String str : extension)
         {
