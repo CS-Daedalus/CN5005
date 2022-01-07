@@ -76,7 +76,7 @@ public class MainController
     @FXML
     public FileChooser importFile(FileChooser var, String[] extension)
     {
-        var.setInitialDirectory(new File(Util.USER_HOME_DIR));
+        var.setInitialDirectory(new File(Util.USER_DOWNLOAD_DIR));
         for (String str : extension)
         {
             var.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(
@@ -96,7 +96,7 @@ public class MainController
     public FileChooser exportFile(FileChooser var, String[] extension)
     {
         var.setInitialFileName("LoremIpsum");
-        var.setInitialDirectory(new File(Util.USER_HOME_DIR));
+        var.setInitialDirectory(new File(Util.USER_DOWNLOAD_DIR));
         for (String str : extension)
         {
             var.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(
