@@ -53,14 +53,14 @@
       <VBox>
          <TabPane fx:id="tabPane" disable="true" tabClosingPolicy="UNAVAILABLE">
             <tabs>
-               <Tab fx:id="relationsTab" text="Compare Relations">
-                  <content>
-                     <fx:include fx:id="relationsPage" source="relations.fxml" />
-                  </content>
-               </Tab>
-               <Tab fx:id="peopleTab" text="Sort People">
+               <Tab fx:id="peopleTab" text="People">
                   <content>
                      <fx:include fx:id="peoplePage" source="people.fxml" />
+                  </content>
+               </Tab>
+               <Tab fx:id="relationsTab" text="Relations">
+                  <content>
+                     <fx:include fx:id="relationsPage" source="relations.fxml" />
                   </content>
                </Tab>
                <Tab fx:id="creditsTab" text="Credits">
