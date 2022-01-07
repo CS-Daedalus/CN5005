@@ -53,9 +53,9 @@ public class FamilyService
         addFamilyRelations(repositoriesService.getRelationRepository().findAll());
     }
 
-    public void findBond(String person1, String person2)
+    public Relation.Bond findBond(String person1, String person2)
     {
-        findBond(
+        return findBond(
             family.getVertex(person1).getPayload(),
             family.getVertex(person2).getPayload()
         );
@@ -63,7 +63,6 @@ public class FamilyService
 
     public Relation.Bond findBond(Person person1, Person person2)
     {
-        //TODO: Incomplete implementation
         List<ImmutablePair<Person, Double>> path = family.getPath(person1, person2);
 
         Relation.Key current_key = new Relation.Key(path.size(), path.get(path.size() - 1).right, person1.getGender());
