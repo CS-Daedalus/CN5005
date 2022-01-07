@@ -2,6 +2,7 @@ package com.gentree.common;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.Locale;
 
 /**
@@ -14,6 +15,7 @@ public final class Util
     public static final String TITLE = "CN5005 - Genealogy Tree";
     public static final String OS = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
     public static final String USER_HOME_DIR = System.getProperty("user.home");
+    public static final String USER_DOWNLOAD_DIR = USER_HOME_DIR + File.separator + "Downloads";
 
     /**
      * Utility classes, which are collections of static members, are not meant to be instantiated.
