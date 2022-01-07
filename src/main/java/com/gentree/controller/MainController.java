@@ -57,7 +57,7 @@ public class MainController
         /*
         Tab selector, for every new tab, add an "else if" statement.
         Can definitely be improved.
-         */
+        */
         tabPane.getSelectionModel().selectedItemProperty().addListener(
             (ObservableValue<? extends Tab> observable,
              Tab oldValue, Tab newValue) -> {
@@ -133,6 +133,9 @@ public class MainController
                 FamilyService.getInstance().populateFamilyTree();
 
                 setAccess(true);
+
+                relationsPageController.init();
+                peoplePageController.init();
             }
             catch (IOException e)
             {
@@ -258,9 +261,9 @@ public class MainController
         // Array, which will contain the comma-separated values of each line of the csv
         String[] tempArray;
         // Map, in which the man is the key and the woman of the relationship is the value
-        Map<String, String> husband = new HashMap<String, String>();
+        Map<String, String> husband = new HashMap<>();
         // Map, in which the child is the key and its parent or parents the value
-        Map<String, String> child = new HashMap<String, String>();
+        Map<String, String> child = new HashMap<>();
         // Array list, which will contain the in-relationship children
         ArrayList inRelChild = new ArrayList();
         dot_output += "digraph G{\nedge [dir=none];\nnode [shape=box];\ngraph [splines=ortho];\n";
