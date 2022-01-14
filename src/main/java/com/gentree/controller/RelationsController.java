@@ -11,15 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 public class RelationsController
 {
 
     private final ObservableList<String> observableListA = FXCollections.observableArrayList();
-    private ObservableList<String> observableListB = FXCollections.observableArrayList();
+
     private int repositoryVersion;
 
     @FXML private ListView<String> listViewA;
@@ -39,10 +35,8 @@ public class RelationsController
         {
             observableListA.addAll(repositoriesService.getPersonRepository().getPersonsName());
 
-            observableListB = observableListA;
-
             listViewA.setItems(observableListA);
-            listViewB.setItems(observableListB);
+            listViewB.setItems(observableListA);
         }
         else if (repositoriesService.getVersion() != repositoryVersion)
         {

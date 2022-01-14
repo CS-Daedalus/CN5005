@@ -1,6 +1,6 @@
 package com.gentree.model;
 
-import com.gentree.common.Util;
+import com.gentree.common.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -92,8 +92,10 @@ public class Relation
     public enum Bond
     {
         // Grand Parents
-        // Starting point: Size: 3, Weight: 4 | Size step = 1
-        // |ε| = 2 > 1 -> elastic ∴ when size increase by 1, the weight increase by 2
+        // Starting point: Size: 3, Weight: 4
+        // ΔSize = 1
+        // ΔWeight = 2
+        // ∴ when size increase by 1, the weight increase by 2
         GRANDPARENT1(new Key(3, 4)),
         GRANDMOTHER1(Key.factory(GRANDPARENT1.key).setGender(Person.Gender.WOMAN)),
         GRANDFATHER1(Key.factory(GRANDPARENT1.key).setGender(Person.Gender.MAN)),
@@ -123,17 +125,21 @@ public class Relation
 
         // Cousin
         // Cousins are gender-neutral
-        // Starting point: Size: 5, Weight: 10 | Size step = 2
-        // |ε| = 2.5 > 1 -> elastic ∴ when size increase by 1, the weight increase by 2.5,
-        //                            but, since the size has a step of 2, it means that
-        //                            for each step (size + 2), the weight increase by 5
+        // Starting point: Size: 5, Weight: 10
+        // ΔSize = 2
+        // ΔWeight = 2.5
+        // ∴ when size increase by 1, the weight increase by 2.5,
+        //   but, since the size has a step of 2, it means that
+        //   for each step (size + 2), the weight increase by 5
         COUSIN1(new Key(5, 10)),
         COUSIN2(new Key(7, 15)),
         COUSIN3(new Key(9, 20)),
 
         // Aunt
-        // Starting point: Size: 4, Weight: 7 | Size step = 1
-        // |ε| = 2 > 1 -> elastic ∴ when size increase by 1, the weight increase by 2
+        // Starting point: Size: 4, Weight: 7
+        // ΔSize = 1
+        // ΔWeight = 2
+        // ∴ when size increase by 1, the weight increase by 2
         AUNT1(new Key(4, 7, Person.Gender.WOMAN)),
         AUNT2(new Key(5, 9, Person.Gender.WOMAN)),
         AUNT3(new Key(6, 11, Person.Gender.WOMAN)),
@@ -145,8 +151,10 @@ public class Relation
         UNCLE3(Key.factory(AUNT3.key).setGender(Person.Gender.MAN)),
 
         // Niece
-        // Starting point: Size: 4, Weight: 8 | Size step = 1
-        // |ε| = 3 > 1 -> elastic ∴ when size increase by 1, the weight increase by 3
+        // Starting point: Size: 4, Weight: 8
+        // ΔSize = 1
+        // ΔWeight = 3
+        // ∴ when size increase by 1, the weight increase by 3
         NIECE1(new Key(4, 8, Person.Gender.WOMAN)),
         NIECE2(new Key(5, 11, Person.Gender.WOMAN)),
         NIECE3(new Key(6, 14, Person.Gender.WOMAN)),
@@ -158,8 +166,10 @@ public class Relation
         NEPHEW3(Key.factory(NIECE3.key).setGender(Person.Gender.MAN)),
 
         // Grand child
-        // Starting point: Size: 3, Weight: 6 | Size step = 1
-        // |ε| = 3 > 1 -> elastic ∴ when size increase by 1, the weight increase by 3
+        // Starting point: Size: 3, Weight: 6
+        // ΔSize = 1
+        // ΔWeight = 3
+        // ∴ when size increase by 1, the weight increase by 3
         GRANDCHILD1(new Key(3, 6)),
         GRANDDAUGHTER1(Key.factory(GRANDCHILD1.key).setGender(Person.Gender.WOMAN)),
         GRANDSON1(Key.factory(GRANDCHILD1.key).setGender(Person.Gender.MAN)),
@@ -180,8 +190,10 @@ public class Relation
         // allowing to distinguish the relations by law.
 
         // Grand Parents by Law
-        // Starting point: Size: 4, Weight: 4.5 | Size step = 1
-        // |ε| = 2 > 1 -> elastic ∴ when size increase by 1, the weight increase by 2
+        // Starting point: Size: 4, Weight: 4.5
+        // ΔSize = 1
+        // ΔWeight = 2
+        // ∴ when size increase by 1, the weight increase by 2
         LAW_GRANDPARENT1(new Key(4, 4.5)),
         LAW_GRANDMOTHER1(Key.factory(LAW_GRANDPARENT1.key).setGender(Person.Gender.WOMAN)),
         LAW_GRANDFATHER1(Key.factory(LAW_GRANDPARENT1.key).setGender(Person.Gender.MAN)),
@@ -216,17 +228,21 @@ public class Relation
 
         // Cousin by Law
         // Cousins are gender-neutral
-        // Starting point: Size: 6, Weight: 5.5 | Size step = 2
-        // |ε| = 2.5 > 1 -> elastic ∴ when size increase by 1, the weight increase by 2.5,
-        //                            but, since the size has a step of 2, it means that
-        //                            for each step (size + 2), the weight increase by 5
+        // Starting point: Size: 6, Weight: 5.5
+        // ΔSize = 2
+        // ΔWeight = 2.5
+        // ∴ when size increase by 1, the weight increase by 2.5,
+        //   but, since the size has a step of 2, it means that
+        //   for each step (size + 2), the weight increase by 5
         LAW_COUSIN1(new Key(6, 10.5)),
         LAW_COUSIN2(new Key(8, 15.5)),
         LAW_COUSIN3(new Key(10, 20.5)),
 
         // Aunt by Law
-        // Starting point: Size: 5, Weight: 7.5 | Size step = 1
-        // |ε| = 2 > 1 -> elastic ∴ when size increase by 1, the weight increase by 2
+        // Starting point: Size: 5, Weight: 7.5
+        // ΔSize = 1
+        // ΔWeight = 2
+        // ∴ when size increase by 1, the weight increase by 2
         LAW_AUNT1(new Key(5, 7.5, Person.Gender.WOMAN)),
         LAW_AUNT2(new Key(6, 9.5, Person.Gender.WOMAN)),
         LAW_AUNT3(new Key(7, 11.5, Person.Gender.WOMAN)),
@@ -238,8 +254,10 @@ public class Relation
         LAW_UNCLE3(Key.factory(LAW_AUNT3.key).setGender(Person.Gender.MAN)),
 
         // Niece by Law
-        // Starting point: Size: 5, Weight: 8.5 | Size step = 1
-        // |ε| = 3 > 1 -> elastic ∴ when size increase by 1, the weight increase by 3
+        // Starting point: Size: 5, Weight: 8.5
+        // ΔSize = 1
+        // ΔWeight = 3
+        // ∴ when size increase by 1, the weight increase by 3
         LAW_NIECE1(new Key(5, 8.5, Person.Gender.WOMAN)),
         LAW_NIECE2(new Key(6, 11.5, Person.Gender.WOMAN)),
         LAW_NIECE3(new Key(7, 14.5, Person.Gender.WOMAN)),
@@ -251,8 +269,10 @@ public class Relation
         LAW_NEPHEW3(Key.factory(LAW_NIECE3.key).setGender(Person.Gender.MAN)),
 
         // Grand child by Law
-        // Starting point: Size: 4, Weight: 6.5 | Size step = 1
-        // |ε| = 3 > 1 -> elastic ∴ when size increase by 1, the weight increase by 3
+        // Starting point: Size: 4, Weight: 6.5
+        // ΔSize = 1
+        // ΔWeight = 3
+        // ∴ when size increase by 1, the weight increase by 3
         LAW_GRANDCHILD1(new Key(4, 6.5)),
         LAW_GRANDDAUGHTER1(Key.factory(LAW_GRANDCHILD1.key).setGender(Person.Gender.WOMAN)),
         LAW_GRANDSON1(Key.factory(LAW_GRANDCHILD1.key).setGender(Person.Gender.MAN)),
@@ -302,7 +322,7 @@ public class Relation
          */
         public static boolean isSupported(String bond)
         {
-            return getSupportedBonds().contains(Util.normaliseUpper(bond));
+            return getSupportedBonds().contains(Utils.normaliseUpper(bond));
         }
 
         /**
@@ -338,7 +358,7 @@ public class Relation
         @Override
         public @NotNull String toString()
         {
-            return Util.normaliseLower(name());
+            return Utils.normaliseLower(name());
         }
 
         /**
@@ -351,7 +371,7 @@ public class Relation
             try
             {
                 // Resolve the bond string to Bond enum
-                return valueOf(Bond.class, Util.normaliseUpper(bond));
+                return valueOf(Bond.class, Utils.normaliseUpper(bond));
             }
             catch (IllegalArgumentException e)
             {

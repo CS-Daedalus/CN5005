@@ -1,6 +1,6 @@
 package com.gentree.controller;
 
-import com.gentree.common.Util;
+import com.gentree.common.Utils;
 import com.gentree.model.Person;
 import com.gentree.model.Relation;
 import com.gentree.service.CsvService;
@@ -76,7 +76,7 @@ public class MainController
     @FXML
     public FileChooser importFile(FileChooser var, String[] extension)
     {
-        var.setInitialDirectory(new File(Util.USER_DOWNLOAD_DIR));
+        var.setInitialDirectory(new File(Utils.USER_DOWNLOAD_DIR));
         for (String str : extension)
         {
             var.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(
@@ -96,7 +96,7 @@ public class MainController
     public FileChooser exportFile(FileChooser var, String[] extension)
     {
         var.setInitialFileName("genealogy-tree");
-        var.setInitialDirectory(new File(Util.USER_DOWNLOAD_DIR));
+        var.setInitialDirectory(new File(Utils.USER_DOWNLOAD_DIR));
         for (String str : extension)
         {
             var.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(

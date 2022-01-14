@@ -1,6 +1,6 @@
 package com.gentree.controller;
 
-import com.gentree.common.Util;
+import com.gentree.common.Utils;
 import com.gentree.service.RepositoriesService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PeopleController
@@ -49,7 +48,7 @@ public class PeopleController
         FileChooser fileChooser = new FileChooser();
 
         System.out.println("The button saveSortedPeople was activated");
-        fileChooser.setInitialDirectory(new File(Util.USER_DOWNLOAD_DIR));
+        fileChooser.setInitialDirectory(new File(Utils.USER_DOWNLOAD_DIR));
         fileChooser.setInitialFileName("people-sorted");
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Text Document", "*.txt"));

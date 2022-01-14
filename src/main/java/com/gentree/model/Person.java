@@ -1,6 +1,6 @@
 package com.gentree.model;
 
-import com.gentree.common.Util;
+import com.gentree.common.Utils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class Person implements Comparable<Person>
      */
     public void setFullName(String fullName)
     {
-        this.fullName = Util.capitalise(fullName);
+        this.fullName = Utils.capitalise(fullName);
     }
 
     /**
@@ -218,7 +218,7 @@ public class Person implements Comparable<Person>
          */
         public static boolean isSupported(String gender)
         {
-            return getSupportedGenders().contains(Util.normaliseUpper(gender));
+            return getSupportedGenders().contains(Utils.normaliseUpper(gender));
         }
 
         /**
@@ -231,7 +231,7 @@ public class Person implements Comparable<Person>
             try
             {
                 // Resolve the gender string to Gender enum
-                return valueOf(Gender.class, Util.normaliseUpper(gender));
+                return valueOf(Gender.class, Utils.normaliseUpper(gender));
             }
             catch (IllegalArgumentException e)
             {
@@ -248,7 +248,7 @@ public class Person implements Comparable<Person>
         @Override
         public @NotNull String toString()
         {
-            return Util.normaliseLower(name());
+            return Utils.normaliseLower(name());
         }
     }
 }

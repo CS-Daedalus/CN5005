@@ -8,7 +8,7 @@ import java.util.Locale;
 /**
  * Utility class for common methods and constants.
  */
-public final class Util
+public final class Utils
 {
     public static final int APP_WIDTH = 640;
     public static final int APP_HEIGHT = 400;
@@ -20,7 +20,7 @@ public final class Util
     /**
      * Utility classes, which are collections of static members, are not meant to be instantiated.
      */
-    private Util()
+    private Utils()
     {
 
     }
@@ -31,7 +31,7 @@ public final class Util
      */
     public static boolean isWindows()
     {
-        return Util.OS.contains("win");
+        return Utils.OS.contains("win");
     }
 
     /**
@@ -40,7 +40,7 @@ public final class Util
      */
     public static boolean isMac()
     {
-        return Util.OS.contains("mac") || Util.OS.contains("darwin");
+        return Utils.OS.contains("mac") || Utils.OS.contains("darwin");
     }
 
     /**

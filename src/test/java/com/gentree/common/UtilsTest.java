@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UtilTest
+public class UtilsTest
 {
     @Test
     @DisplayName("Test word capitalisation")
@@ -13,7 +13,7 @@ public class UtilTest
     {
         String test = "FOo bAR";
         String expected = "Foo Bar";
-        String actual = Util.capitalise(test);
+        String actual = Utils.capitalise(test);
 
         assertEquals(expected, actual);
     }
@@ -24,7 +24,7 @@ public class UtilTest
     {
         String test = "FOo bAR";
         String expected = "foo bar";
-        String actual = Util.normaliseLower(test);
+        String actual = Utils.normaliseLower(test);
 
         assertEquals(expected, actual);
     }
@@ -35,7 +35,7 @@ public class UtilTest
     {
         String test = "FOo bAR";
         String expected = "FOO BAR";
-        String actual = Util.normaliseUpper(test);
+        String actual = Utils.normaliseUpper(test);
 
         assertEquals(expected, actual);
     }

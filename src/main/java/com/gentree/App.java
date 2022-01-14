@@ -1,6 +1,6 @@
 package com.gentree;
 
-import com.gentree.common.Util;
+import com.gentree.common.Utils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +17,7 @@ public class App
     public void start(Stage stage)
         throws Exception
     {
-        if (!(Util.isWindows() || Util.isMac()))
+        if (!(Utils.isWindows() || Utils.isMac()))
         {
             //Load Arial font for all *nix platforms
             Font.loadFont(
@@ -31,8 +31,8 @@ public class App
                 Thread.currentThread().getContextClassLoader()
                       .getResource("view/main.fxml")));
 
-        stage.setTitle(Util.TITLE);
-        stage.setScene(new Scene(root, Util.APP_WIDTH, Util.APP_HEIGHT));
+        stage.setTitle(Utils.TITLE);
+        stage.setScene(new Scene(root, Utils.APP_WIDTH, Utils.APP_HEIGHT));
         stage.setResizable(false);
         stage.show();
     }

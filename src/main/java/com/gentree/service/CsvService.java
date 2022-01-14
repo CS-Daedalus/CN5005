@@ -77,10 +77,10 @@ public final class CsvService
             }
         }
 
-        if (personTuples.isEmpty() || relationTuples.isEmpty())
+        if (getPersonTuples().isEmpty() || getRelationTuples().isEmpty())
             throw new IllegalArgumentException("The file is either empty or missing either people or relations.");
 
-        return new ImmutablePair<>(personTuples, relationTuples);
+        return new ImmutablePair<>(getPersonTuples(), getRelationTuples());
     }
 
     /**
@@ -106,8 +106,8 @@ public final class CsvService
      */
     public void reset()
     {
-        personTuples.clear();
-        relationTuples.clear();
+        getPersonTuples().clear();
+        getRelationTuples().clear();
     }
 
     /**
@@ -148,7 +148,7 @@ public final class CsvService
     {
         // split[0] = full name
         // split[1] = gender
-        personTuples.add(new Person.Tuple(){{
+        getPersonTuples().add(new Person.Tuple(){{
             fullName = split[0];
             gender = split[1];
         }});
@@ -163,7 +163,7 @@ public final class CsvService
         // split[0] = full name (person1)
         // split[1] = bond
         // split[2] = full name (person2)
-        relationTuples.add(new Relation.Tuple(){{
+        getRelationTuples().add(new Relation.Tuple(){{
             person1FullName = split[0];
             bond = split[1];
             person2FullName = split[2];
